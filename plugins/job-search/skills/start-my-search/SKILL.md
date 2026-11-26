@@ -6,7 +6,7 @@ description: >
   find a job in" a sector, "run my whole job search", "help my son or daughter
   get a job", or accepting the offer made at the end of try-one-job.
 metadata:
-  version: "0.7.0"
+  version: "0.7.1"
 ---
 
 # Start my search
@@ -25,6 +25,10 @@ Points specific to this skill:
   Opus. You can switch with the model picker, or carry on as we are." Then do
   what the candidate prefers.
 - Run the storage test before the interview, not after. If it fails, stop.
+- If this project has no instructions that mention the job-search plugin,
+  offer the text in the engine's `references/project-instructions.md` for
+  the person to paste into the project's instructions. It makes every later
+  conversation start the right way. Carry on whether or not they add it.
 - If the person setting this up is not the candidate (a parent, a friend),
   say so kindly before intake: the search works only if the candidate owns
   it. Ask for the candidate to do the interview, and offer the other person

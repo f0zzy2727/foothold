@@ -46,6 +46,8 @@ class Case(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp(prefix="job-search-test-"))
         self.ws = self.tmp / "ws"
         shutil.copytree(FIXTURES / "sample-search", self.ws)
+        for empty in ("inbox", "reviews", "signals", "profile/cv", "profile/projects"):
+            (self.ws / empty).mkdir(parents=True, exist_ok=True)     # git does not keep empty folders
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
 
     def run_cmd(self, *args, home=None, day=DAY):
@@ -99,6 +101,20 @@ class Basics(Case):
             entry = json.loads(market.read_text())["plugins"][0]
             self.assertEqual(entry["name"], manifest["name"])
             self.assertTrue((REPO / entry["source"] / ".claude-plugin" / "plugin.json").exists())
+
+    def test_setup_guide_carries_the_same_instructions_as_the_plugin(self):
+        guide = (REPO / "SETUP.md")
+        if not guide.exists():
+            self.skipTest("SETUP.md is only in the repository, not in the plugin alone")
+        block = re.search(r"<!-- project-instructions:start -->\n```text\n(.*?)\n```\n<!-- project-instructions:end -->",
+                          guide.read_text(), re.S)
+        self.assertIsNotNone(block, "SETUP.md has no instructions block")
+        plugin_copy = (PLUGIN / "skills/engine/references/project-instructions.md").read_text().rstrip("\n")
+        self.assertEqual(block.group(1), plugin_copy)
+        for heading in ("ROLE", "ACTION", "CONTEXT", "EXPECTATIONS"):
+            self.assertRegex(plugin_copy, rf"(?m)^{heading}$")
+        for skill in sorted(p.name for p in (PLUGIN / "skills").iterdir() if p.name != "engine"):
+            self.assertIn(skill, plugin_copy, f"the instructions do not mention {skill}")
 
     def test_every_setting_the_script_reads_is_in_the_seed(self):
         seed = (PLUGIN / "skills/engine/references/seed/settings.md").read_text()
@@ -260,12 +276,32 @@ class SaveAndRestore(Case):
         code, out = self.run_cmd("storage-test", "make")
         self.assertEqual(code, 0, out)
         stored = (self.ws / ".save" / "setup-test.txt").read_text()
-        self.assertGreater(len(stored), 40000)
+        self.assertGreater(len(stored), 5000)
         back = self.tmp / "back.txt"
-        back.write_text(stored[:30000])
+        back.write_text(stored[:3000])
         self.assertEqual(self.run_cmd("storage-test", "check", str(back))[0], 1)
         back.write_text(stored)
         self.assertEqual(self.run_cmd("storage-test", "check", str(back))[0], 0)
+
+    def test_a_test_file_from_an_earlier_conversation_is_recognised(self):
+        self.make_cloud()
+        self.run_cmd("storage-test", "make")
+        left_behind = (self.ws / ".save" / "setup-test.txt").read_text()
+        later = self.new_cloud("later")                       # a new conversation, nothing loaded
+        doc = self.tmp / "doc.txt"
+        doc.write_text(left_behind)
+        code, out = self.run_cmd("storage-test", "found", str(doc), home=later)
+        self.assertEqual(code, 0, out)
+        self.assertIn("keeps files between conversations", out)
+        doc.write_text(left_behind[:2000])
+        self.assertEqual(self.run_cmd("storage-test", "found", str(doc), home=later)[0], 1)
+
+    def test_save_lines_carry_the_checksum_of_the_whole_file(self):
+        self.make_cloud()
+        code, out = self.run_cmd("close", "first")
+        line = next(l for l in out.splitlines() if l.startswith("SAVE  .save/core.txt"))
+        want = hashlib.sha256((self.ws / ".save" / "core.txt").read_bytes()).hexdigest()
+        self.assertIn(f"sha256 {want}", line)
 
 
 class Tidying(Case):

@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.7.1, 2026-11-26
+
+No change to the search format.
+
+Added
+- `SETUP.md`: one page that takes a new person from nothing to a working
+  search, with the project instructions to paste (in Role, Action, Context,
+  Expectations form) and five bootstrap tests.
+- "Run the setup tests": the doctor now reports a short pass or fail table,
+  and works before any search has been saved.
+- A test that the project keeps files between conversations, using the test
+  file an earlier conversation left behind.
+- Each save line gives the file's sha256, so a write to the project can be
+  confirmed without reading the file back.
+- `AGENTS.md` and `CLAUDE.md` for anyone working on this repository with a
+  coding agent.
+
+Changed
+- The storage test file is smaller. Measured: a project document of about
+  120,000 characters or less comes back as text that Claude must copy to disk
+  by hand, so a large test file tested Claude's copying more than the
+  storage. The checksum still catches any slip.
+
+Fixed
+- Two tests failed on a fresh clone because git does not keep empty folders.
+
 ## 0.7.0, 2026-11-26
 
 Search format 3. Searches made with 0.5.0 or 0.6.0 are upgraded

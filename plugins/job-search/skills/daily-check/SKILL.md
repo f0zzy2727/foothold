@@ -8,7 +8,7 @@ description: >
   new openings", "I have added some jobs", "I found a job", or a scheduled
   task that names this skill.
 metadata:
-  version: "0.7.0"
+  version: "0.7.1"
 ---
 
 # Daily check

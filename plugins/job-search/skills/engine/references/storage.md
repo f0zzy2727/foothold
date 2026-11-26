@@ -56,14 +56,23 @@ as a few plain text save files under `job-search/`.
 
 ### The storage test (at setup, and whenever the doctor runs)
 
-1. `pipeline storage-test make`. It writes a test file of about the size a
-   real search reaches.
+1. `pipeline storage-test make`. It writes a small test file with a
+   checksum.
 2. Write that file to the Project as `job-search/setup-test.txt`, passing the
    file itself.
 3. Read `job-search/setup-test.txt` back and get it onto disk exactly as
    returned.
 4. `pipeline storage-test check <that file>`. PASS means this place can keep
    a search. FAIL means it cannot: say so plainly and do not continue setup.
+5. Leave `job-search/setup-test.txt` where it is. In a later conversation,
+   `pipeline storage-test found <file>` on that same document proves the
+   place keeps files between conversations.
+
+What is known about Project documents, measured in November 2026: a document
+of about 120,000 characters or less comes back as text in the reply, and must
+be written to disk exactly as returned. A much larger one comes back as a
+file. The checksum catches any slip either way. Do not pad a save to make it
+larger.
 
 ### Close
 
@@ -93,7 +102,10 @@ small: a scheduled check, or one thing the candidate told you.
    Never make the page public. If this session cannot publish pages, skip
    this step.
 5. For each SAVE line, write that file to the Project path shown, passing the
-   file itself. Write `job-search/latest.txt` last. Never retype a save
+   file itself. Write `job-search/latest.txt` last. Each SAVE line gives the
+   file's sha256. If the reply to the write carries a version that is a
+   64 character hash, it should equal that sha256. If it does not, write the
+   file again. Never retype a save
    file's content: a retyped file fails its checksum next time.
 6. Also write three readable documents the candidate can open directly:
    `job-search/NEXT.md`, `job-search/pipeline.md` and

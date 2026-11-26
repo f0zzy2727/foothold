@@ -27,22 +27,21 @@ set it up.
 
 ## Get started
 
-You need a paid Claude plan and your CV. Allow about an hour the first time.
-You are only needed for half of it.
+**Follow [SETUP.md](SETUP.md).** It is one page, written for someone who has
+never used an AI tool. It takes you from nothing to a working search in six
+steps, and it includes five short tests so you can see for yourself that each
+part works before you depend on it.
 
-**Add it to Claude.** Open Claude. Go to Customize, then Plugins. Choose Add,
-then Add marketplace, and paste:
+The short version:
 
-```
-f0zzy2727/foothold
-```
-
-Then choose the `job-search` plugin. Added this way, new versions arrive
-without you doing anything.
-
-Prefer a file? Download `job-search.plugin` from the
-[latest release](https://github.com/f0zzy2727/foothold/releases/latest) and
-use Upload plugin in the same menu.
+1. Add the plugin to Claude: Customize, then Plugins, then Add marketplace,
+   and paste `f0zzy2727/foothold`.
+2. Create a project called "My job search".
+3. Paste the instructions from SETUP.md into the project.
+4. Add your CV.
+5. Type `Run the setup tests`, then paste an advert and type
+   `Is this job right for me?`
+6. Type `Start my search`.
 
 In Claude Code, version 2.1.275 or later:
 
@@ -50,14 +49,20 @@ In Claude Code, version 2.1.275 or later:
 /plugin install job-search --marketplace f0zzy2727/foothold
 ```
 
-**Then follow the six steps** in the
-[user guide](plugins/job-search/README.md). The short version: make a Project
-called "My job search", add your CV, paste an advert and type *Is this job
-right for me?*
+### The bootstrap tests
 
-Menu names were checked against Claude's documentation in November 2026 and
-may change. If a step does not match what you see, ask Claude "How do I add a
-plugin?"
+These are the checks in SETUP.md. Run them in this order on a new setup.
+
+| Test | Type this | Proves |
+|---|---|---|
+| 1 | `Run the setup tests` | The plugin is on, its checks run, and your search can be stored in the project and read back |
+| 2 | A new chat, then `Run the setup tests` | The project keeps your search between conversations |
+| 3 | An advert, then `Is this job right for me?` | You get an honest verdict from your own CV |
+| 4 | After `Start my search`: a new chat, then `What should I do today?` | Claude picks up your saved search without being told who you are |
+| 5 | `Show me my dashboard` | The whole search appears on one page |
+
+Tests 1 to 3 take about 15 minutes and need no commitment. If test 1 says
+storing failed, stop there and open an issue.
 
 ## What it does
 
@@ -92,7 +97,7 @@ every job it affects gets a fresh verdict.
 
 ## Status
 
-Version 0.7.0. An early pilot.
+Version 0.7.1. An early pilot.
 
 **Tested**, by the automated suite in this repository: the honesty checks
 against a deliberately dishonest application, an advert with instructions
@@ -142,6 +147,7 @@ The full text is in [DISCLAIMER.md](DISCLAIMER.md).
 
 | Path | What it is |
 |---|---|
+| `SETUP.md` | The one page a new person follows, with the project instructions and the bootstrap tests |
 | `plugins/job-search/` | The plugin: ten skills, the specialist briefs, the templates and one script |
 | `.claude-plugin/marketplace.json` | Lets Claude install the plugin from this repository |
 | `tests/` | The test suite and an invented sample search it runs against |
@@ -166,7 +172,7 @@ To release a version:
    in every `SKILL.md`. A test fails if they disagree.
 2. If a file in a person's saved search changed shape, follow `MIGRATIONS.md`.
 3. Add an entry to `CHANGELOG.md`.
-4. Run the tests, commit, then tag and push: `git tag v0.7.0` and
+4. Run the tests, commit, then tag and push: `git tag v0.7.1` and
    `git push --tags`. The release workflow builds the upload file and
    attaches it to a GitHub release.
 

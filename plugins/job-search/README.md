@@ -46,6 +46,10 @@ Three promises:
 
 ## Set up in six steps
 
+The full guide, with the instructions to paste into your project and five
+short tests to check each part works, is one page:
+https://github.com/f0zzy2727/foothold/blob/main/SETUP.md
+
 You need a paid Claude plan, this plugin and your CV. Allow about an hour
 the first time. You are only needed for half of it.
 
@@ -58,7 +62,9 @@ check works well on Sonnet. You do not need the most powerful model.
    then arrive without you doing anything. If you were sent a plugin file
    instead, choose Upload plugin and pick the file.
 2. **Make a home for your search.** Go to Projects and choose New project.
-   Call it "My job search". Add your CV to it with the plus button.
+   Call it "My job search". Paste the project instructions from the setup
+   guide, and add your CV with the plus button. Then type: *Run the setup
+   tests.*
 3. **Try it on one job.** Inside that project, start a chat. Paste a job
    advert and type: *Is this job right for me?* You get an honest verdict in
    about ten minutes. If that is not useful, stop here.
@@ -153,7 +159,7 @@ nothing you wrote is changed.
 - A sector pack for the music industry. Any other career works: Claude drafts
   a pack for it at setup.
 
-## Honest status, version 0.7.0
+## Honest status, version 0.7.1
 
 Tested by an automated test suite that ships with the source: the checking
 script against a deliberately dishonest application, an advert with planted

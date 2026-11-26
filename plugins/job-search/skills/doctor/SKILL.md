@@ -4,11 +4,11 @@ description: >
   This skill should be used to check that a job search run with this plugin
   is set up and working, and to repair it when it is not. Triggers include
   "run the doctor", "check my setup", "is everything set up right",
-  "something is not working", "my search is broken", "it has stopped
-  working", "fix my setup", "why is my dashboard out of date", or an error
-  from any other job-search skill that it cannot explain.
+  "run the setup tests", "something is not working", "my search is broken",
+  "it has stopped working", "fix my setup", "why is my dashboard out of
+  date", or an error from any other job-search skill that it cannot explain.
 metadata:
-  version: "0.7.0"
+  version: "0.7.1"
 ---
 
 # Doctor
@@ -37,23 +37,40 @@ script cannot see them.
 | Publishing pages | A tool that publishes a web page is present | Not a fault. Say the dashboard will be given as a file instead of a link |
 | The model | You know which model you are | Not a fault. If it is smaller than Opus, say once that setup and applications work best on Opus and the daily check is fine on Sonnet |
 
-## Part 2: the saved search
+## Part 2: can this place keep a search
+
+Do this every time, whether or not a search has been saved yet. It answers
+the question a new person most needs answered: will my search still be here
+tomorrow.
+
+1. If there is no workspace on disk yet, make an empty one:
+   `pipeline init ./job-search --cloud` (or `pipeline init <folder>` when the
+   search lives in a folder).
+2. Look for a document called `job-search/setup-test.txt` in the Project.
+   If one is there, an earlier conversation left it. Read it, get it onto
+   disk exactly as returned, and run `pipeline storage-test found <file>`.
+   FOUND proves this place keeps files between conversations.
+3. Run the storage test in `references/storage.md`: `pipeline storage-test
+   make`, write the file to the Project, read it back, `pipeline storage-test
+   check <file>`. In a folder on the computer the first command does the
+   whole test. Leave the test document in the Project: the next conversation
+   uses it for step 2.
+4. If the storage test fails, say so plainly, and do not start or continue a
+   search in this place.
+
+## Part 3: the saved search
+
+Skip this part when no search has been saved yet. Say so in one line and
+offer "Start my search".
 
 1. Open the workspace as `references/storage.md` describes.
    - If a save file is refused, run `pipeline verify` on every save file you
      can fetch, to see which are sound. Restore the sound ones. Tell the
      candidate exactly which part could not be loaded. Never continue from a
      partial restore of the core save.
-   - If there is no saved search at all, say so, and offer "Start my search".
-     Stop here.
 2. Restore every opportunity that is not closed, so their documents can be
    checked.
-3. Run the storage test in `references/storage.md`: `pipeline storage-test
-   make`, write the test file to the Project, read it back, `pipeline
-   storage-test check <file>`. This proves, with a file the size of a real
-   search, that this place can keep the search and give it back intact. In a
-   folder on the computer the first command does the whole test.
-4. Run `pipeline doctor`. It changes nothing. It also reports when the
+3. Run `pipeline doctor`. It changes nothing. It also reports when the
    automatic daily check last reached the search, and whether the search was
    brought up to date from an older version of the plugin. Each line is one
    of:
@@ -61,24 +78,44 @@ script cannot see them.
 | Line starts | Meaning | What to do |
 |---|---|---|
 | `OK` | Fine | Nothing |
-| `FIXABLE` | The script can repair it safely | Step 5 |
-| `REDO` | Something you, the coordinator, must do or redo | Step 6 |
-| `NEEDS YOU` | Only the candidate can settle it | Step 7 |
+| `FIXABLE` | The script can repair it safely | Step 4 |
+| `REDO` | Something you, the coordinator, must do or redo | Step 5 |
+| `NEEDS YOU` | Only the candidate can settle it | Step 6 |
 | `INFO` | Worth knowing, not a fault | Mention only if relevant |
 
-5. **Repair.** If there are `FIXABLE` lines, tell the candidate in one
+4. **Repair.** If there are `FIXABLE` lines, tell the candidate in one
    sentence what will be repaired and that every changed file is backed up
    first. If they are present, ask once: "Shall I fix these?" On a yes, run
    `pipeline doctor --fix`. In an unattended run, do not repair: report only.
-6. **Redo.** For each `REDO` line, do what it says by rerunning the step
+5. **Redo.** For each `REDO` line, do what it says by rerunning the step
    concerned (`references/checks.md` says which check belongs to which step).
    Never invent content to make a check pass. If a line in the evidence bank
    is malformed, rewrite it in the right form without changing its meaning,
    and read it back to the candidate.
-7. **Needs you.** Give the candidate each `NEEDS YOU` item as one plain
+6. **Needs you.** Give the candidate each `NEEDS YOU` item as one plain
    instruction, most important first, at most three at a time.
-8. Run `pipeline doctor` once more to confirm. Then close the workspace with
+7. Run `pipeline doctor` once more to confirm. Then close the workspace with
    `pipeline close "the doctor checked your setup"`.
+
+## The setup tests
+
+When the person says "Run the setup tests", or this is their first
+conversation, report Parts 1 and 2 as this table and nothing longer. Use
+PASS, FAIL or NOT YET, and plain words.
+
+| Test | Result | What to do |
+|---|---|---|
+| The plugin is switched on | PASS, with its version | |
+| Claude can run its checks | | |
+| Your search can be stored here and read back | | |
+| This project remembers between conversations | PASS if step 2 said FOUND. NOT YET on the very first run: "Start a new chat and type Run the setup tests again" | |
+| Claude can search the web for openings | | |
+| Research mode is available for the field research | PASS, or NOT YET with how to switch it on | |
+| Project instructions are in place | PASS if this project's instructions mention the job-search plugin | Otherwise offer the text in `references/project-instructions.md` to paste |
+| A daily check is scheduled | PASS, or NOT YET: "I can set one up after you start your search" | |
+
+End with one line: "All set" when the first three pass, otherwise the single
+next thing to do. NOT YET is not a failure.
 
 ## What a repair will and will not do
 
@@ -98,7 +135,7 @@ Lead with the answer, using the same signals as the dashboard.
 - Everything fine: "Your setup is working. Nothing needs you."
 - Repaired: say how many things were repaired and name the one or two that
   matter in plain words. Leave out caches and logs unless asked.
-- Needs you: the instructions from step 7.
+- Needs you: the instructions from step 6 of Part 3.
 - Could not be fixed here: say exactly what is not working and what was
   tried, and that nothing was lost.
 

@@ -1815,7 +1815,9 @@ def cmd_save(_args):
     for name in changed:
         (out / f"{name}.txt").write_text(texts[name], encoding="utf-8")
         seen[name] = digest(texts[name])
-        print(f"SAVE  .save/{name}.txt  ->  store as  job-search/{name}.txt  ({len(texts[name])} characters)")
+        whole = hashlib.sha256(texts[name].encode("utf-8")).hexdigest()
+        print(f"SAVE  .save/{name}.txt  ->  store as  job-search/{name}.txt  "
+              f"({len(texts[name])} characters, sha256 {whole})")
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     (out / "latest.txt").write_text(
         f"JOB-SEARCH-LATEST | generation {gen} | saved {stamp} | core sha256={digest(texts['core'])}\n",
@@ -2018,8 +2020,8 @@ def cmd_storage_test(args):
         return 0 if good else 1
     if args[:1] == ["make"]:
         token = hashlib.sha256(os.urandom(16)).hexdigest()[:16]
-        lines = [f"token {token}", "Zoë Ó Briain, café, 東京, naïve, 30 %, £ and €"]
-        lines += [f"{i:04d} " + hashlib.sha256(f"{token}{i}".encode()).hexdigest() for i in range(700)]
+        lines = [f"token {token}", f"made {now}", "Zoë Ó Briain, café, 東京, naïve, 30 %, £ and €"]
+        lines += [f"{i:04d} " + hashlib.sha256(f"{token}{i}".encode()).hexdigest() for i in range(100)]
         text = pack_texts("setup-test", [("setup-test/body.txt", "\n".join(lines) + "\n")])
         (ROOT / ".save").mkdir(exist_ok=True)
         (ROOT / ".save" / "setup-test.txt").write_text(text, encoding="utf-8")
@@ -2028,6 +2030,19 @@ def cmd_storage_test(args):
         print(f"SAVE  .save/setup-test.txt  ->  store as  job-search/setup-test.txt  ({len(text)} characters)")
         print("NEXT  read job-search/setup-test.txt back from the Project, get it onto disk exactly as "
               "returned, and run: storage-test check <that file>")
+        return 0
+    if args[:1] == ["found"] and len(args) > 1:
+        # A test file left by an earlier conversation proves the place keeps
+        # files between conversations, which a test inside one conversation cannot.
+        save = parse_save(Path(args[1]).read_text(encoding="utf-8", errors="replace")) \
+            if Path(args[1]).is_file() else None
+        made = re.search(r"^made (\d{4}-\d{2}-\d{2} \d{2}:\d{2})$", save["files"][0][1], re.M) \
+            if save and save["ok"] and save["name"] == "setup-test" else None
+        if not made:
+            print("NOT FOUND  that is not an intact setup test file from an earlier conversation")
+            return 1
+        print(f"FOUND  a setup test file made {made.group(1)} is still here and intact, "
+              "so this place keeps files between conversations")
         return 0
     if args[:1] == ["check"] and len(args) > 1:
         state = load_json(record)
@@ -2049,7 +2064,7 @@ def cmd_storage_test(args):
             return 1
         print(f"PASS  a {state.get('size', 0)}-character file was stored and read back unchanged")
         return 0
-    print("usage: storage-test make | storage-test check <file read back from the Project>")
+    print("usage: storage-test make | storage-test check <file read back> | storage-test found <file from an earlier conversation>")
     return 1
 
 

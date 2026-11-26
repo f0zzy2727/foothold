@@ -7,7 +7,7 @@ description: >
   for this role", "try one job", or when the user shares a job advert and a CV
   and asks what their chances are.
 metadata:
-  version: "0.7.0"
+  version: "0.7.1"
 ---
 
 # Try one job
