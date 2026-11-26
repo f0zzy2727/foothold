@@ -3,6 +3,9 @@
 This one page takes you from nothing to a working job search. Follow it from
 top to bottom. You do not need to know anything about AI.
 
+Want to see the whole thing first? [How your job search works](https://f0zzy2727.github.io/foothold/how-it-works.html) shows
+it on one page.
+
 **You need:** a paid Claude plan, your CV as a file, and one job advert you
 are curious about.
 

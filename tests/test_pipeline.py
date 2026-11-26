@@ -132,6 +132,18 @@ class Basics(Case):
                                   (r"fonts\.(googleapis|gstatic)", "a web font"), (r"\bfetch\(", "a request")):
                 self.assertIsNone(re.search(pattern, text), f"{page.name} has {what}")
 
+    def test_links_to_the_explainer_point_at_a_page_that_exists(self):
+        if not (REPO / "docs").exists():
+            self.skipTest("the explainer is only in the repository, not in the plugin alone")
+        site = "https://f0zzy2727.github.io/foothold/"
+        places = [REPO / "SETUP.md", REPO / "README.md", PLUGIN / "skills/doctor/SKILL.md",
+                  PLUGIN / "skills/engine/references/how-it-works.md"]
+        for place in places:
+            names = re.findall(re.escape(site) + r"([\w./-]*)", place.read_text())
+            self.assertTrue(names, f"{place.name} does not link to the explainer")
+            for name in names:
+                self.assertTrue((REPO / "docs" / (name or "index.html")).is_file(), f"{place.name} links to {name}")
+
     def test_page_scripts_are_sound_and_keep_their_names_to_themselves(self):
         for page in self.pages():
             text = page.read_text()

@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+No change to the search format. A release needs a version number: see rule 5
+in `AGENTS.md`.
+
+Added
+- The page that explains the search now has a public address:
+  https://f0zzy2727.github.io/foothold/how-it-works.html. GitHub Pages serves
+  it from `docs/`.
+- A link to that page in `SETUP.md` and the README, in the words Claude uses
+  for help, and at the end of the setup tests when they pass.
+- A test that every link to the page points at a file that exists.
+
 ## 0.8.0, 2026-11-26
 
 No change to the search format.

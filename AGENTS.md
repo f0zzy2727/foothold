@@ -21,7 +21,9 @@ are new to AI. Everything they see must be plain.
 - `docs/how-it-works.html`: the page that explains the search to a new
   person. It shares its look with the dashboard template
   (`references/dashboard-template.html`). Neither page may load anything from
-  another site. A test enforces this.
+  another site. A test enforces this. GitHub Pages serves the `docs` folder,
+  so a push to `main` updates the page at
+  https://f0zzy2727.github.io/foothold/how-it-works.html
 - `FACTS.md`: what has been learned about how the plugin behaves in the
   Claude app. Read it before changing storage, folders or setup.
 - `tests/`: the test suite and an invented sample search.

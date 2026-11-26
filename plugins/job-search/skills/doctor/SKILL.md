@@ -117,6 +117,9 @@ PASS, FAIL or NOT YET, and plain words.
 End with one line: "All set" when the first three pass, otherwise the single
 next thing to do. NOT YET is not a failure.
 
+When the first three pass, add one more line under it: "Here is the whole
+search on one page: https://f0zzy2727.github.io/foothold/how-it-works.html"
+
 ## What a repair will and will not do
 
 A repair may: recreate a missing folder or blank starter file, restore a

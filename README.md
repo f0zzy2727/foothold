@@ -27,6 +27,8 @@ set it up.
 
 ## Get started
 
+**See it first:** [How your job search works](https://f0zzy2727.github.io/foothold/how-it-works.html), on one page.
+
 **Follow [SETUP.md](SETUP.md).** It is one page, written for someone who has
 never used an AI tool. It takes you from nothing to a working search in six
 steps, and it includes five short tests so you can see for yourself that each

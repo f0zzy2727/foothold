@@ -3,6 +3,15 @@
 Use this wording, or close to it, when the candidate asks what this is or
 says "help".
 
+## The picture
+
+There is a page that shows the whole search: the ten stops, who does what at
+each, and how to set up. Give this link when the candidate asks how it works,
+asks for help, or seems unsure what happens next. Give it once in a
+conversation, not every time.
+
+https://f0zzy2727.github.io/foothold/how-it-works.html
+
 ## In one breath
 
 It is a job search assistant that does the legwork and tells you the truth.
