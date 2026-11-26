@@ -61,7 +61,7 @@ tomorrow.
 ## Part 3: the saved search
 
 Skip this part when no search has been saved yet. Say so in one line and
-offer "Start my search".
+offer "Start my search" in the words given under "The setup tests".
 
 1. Open the workspace as `references/storage.md` describes.
    - If a save file is refused, run `pipeline verify` on every save file you
@@ -116,6 +116,17 @@ PASS, FAIL or NOT YET, and plain words.
 
 End with one line: "All set" when the first three pass, otherwise the single
 next thing to do. NOT YET is not a failure.
+
+When no search has been saved yet, the next thing to do is to start one. "Start
+my search" sounds as if the looking begins at once, so say what it really
+does. Use these words, or close to them:
+
+   "Next: type Start my search. I get to know you first, with about 20 minutes
+   of questions. Then I research how your field hires. I only look for jobs
+   after that."
+
+Never offer "Check for new jobs" to someone who has not been through that
+conversation and the research.
 
 When the first three pass, add one more line under it: "Here is the whole
 search on one page: https://f0zzy2727.github.io/foothold/how-it-works.html"

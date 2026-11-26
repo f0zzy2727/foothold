@@ -202,6 +202,7 @@ footer{font-size:.875rem;color:var(--ink-2);max-width:72ch;display:flex;flex-dir
           <p class="count"><span id="count"></span><span class="turn" id="turn"></span></p>
           <h2 id="stoptitle"></h2>
           <p class="what" id="what"></p>
+          <div id="begin"></div>
         </div>
         <div class="split">
           <dl class="who" id="who"></dl>
@@ -261,13 +262,13 @@ const STEPS = [
  {id:"know-you", short:"Get to know you", you:true, title:"Get to know you",
   what:"A conversation, one question at a time, about what you want and what you have actually done. Paid work, unpaid work and projects all count.",
   claude:"Asks about your goals, where you can work, and your experience. Writes down each thing you have done as a numbered fact.",
-  you_do:"Share your CV and answer honestly. \"I don't know\" is a fine answer.", time:"About 20 minutes, once",
+  you_do:"Share your CV and answer honestly. \"I don't know\" is a fine answer.", time:"About 20 minutes, once", say:"Start my search",
   get:"An evidence list: the numbered facts that every later step is built from.",
   doc:["Sam's evidence list", [["green","Fact 1","Volunteer stage crew at a local arts festival, 2024 and 2025. Ran load-in for 12 acts."],["green","Fact 2","Bar supervisor, 2023 to 2025. Built weekly rotas in Excel for 9 staff."],["","Sam is 22 and wants to work in live music.","These two facts are where everything starts."]]]},
  {id:"learn-field", short:"Research your field", you:true, title:"Research how your field hires",
   what:"Every field hires differently. Before looking for jobs, Claude researches in depth how people really get hired in your part of it, at your level, where you live.",
   claude:"Uses Research mode, which looks much further than an ordinary search. Every claim comes with its source.",
-  you_do:"Switch Research on when Claude asks. Read the short version, and say if anything looks wrong. Ask for a refresh whenever you like.", time:"About 15 minutes",
+  you_do:"Switch Research on when Claude asks. Read the short version, and say if anything looks wrong. Ask for a refresh whenever you like.", time:"About 15 minutes", say:"Research my field",
   get:"A plain summary of how hiring works for you, organisations worth watching, and a list of places to look.",
   doc:["Questions the research answers for Sam", [["","Who employs crew within reach?","Venues, festivals, promoters."],["","Are roles advertised, or filled through people who have already worked events?",""],["","What counts as proof?","Qualifications, or shows you have worked."],["red","Which offers should Sam be wary of?",""],["green","Every answer comes with its source",""]]]},
  {id:"watch", short:"Watch for openings", you:false, title:"Watch for openings",
@@ -421,6 +422,7 @@ function show(i, byUser){
   const turn = $("turn"); turn.replaceChildren(icon(s.you ? "amber" : "grey"), document.createTextNode(s.you ? "Your turn" : "Claude handles this on its own")); turn.className = "turn " + (s.you ? "amber" : "grey");
   $("stoptitle").textContent = s.title;
   $("what").textContent = s.what;
+  $("begin").replaceChildren(); if(s.say) $("begin").appendChild(say(s.say, "This stop begins when you say"));
   const dl = $("who"); dl.replaceChildren();
   row(dl, "Claude", s.claude); row(dl, "You", s.you_do); row(dl, "Your time", s.time); row(dl, "You get", s.get);
   const sheet = $("sheet"); sheet.replaceChildren();

@@ -2,9 +2,10 @@
 name: start-my-search
 description: >
   This skill should be used when the user wants to set up a full, ongoing job
-  search. Triggers include "start my search", "set up my job search", "help me
-  find a job in" a sector, "run my whole job search", "help my son or daughter
-  get a job", or accepting the offer made at the end of try-one-job.
+  search. Triggers include "start my search", "get to know me", "set up my job
+  search", "help me find a job in" a sector, "run my whole job search", "help
+  my son or daughter get a job", or accepting the offer made at the end of
+  try-one-job.
 metadata:
   version: "0.8.0"
 ---

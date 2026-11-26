@@ -16,6 +16,13 @@ Changed
   `job-search/`, and the marker file is still `.job-search`. A search saved
   with the old name opens unchanged.
 
+Fixed
+- After the setup tests, Claude said only "type Start my search", which reads
+  as if the looking begins at once. The doctor now says what happens first:
+  the questions about the person, then the field research, and only then any
+  jobs. "Get to know me" also starts setup, and the first two stops on the
+  explainer page show the words that begin them.
+
 Added
 - The page that explains the search now has a public address:
   https://f0zzy2727.github.io/foothold/how-it-works.html. GitHub Pages serves
