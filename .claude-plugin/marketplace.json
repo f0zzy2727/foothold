@@ -1,0 +1,14 @@
+{
+  "name": "foothold",
+  "description": "Foothold: an honest, systematic job search, run with Claude.",
+  "owner": {
+    "name": "LUGHa"
+  },
+  "plugins": [
+    {
+      "name": "job-search",
+      "source": "./plugins/job-search",
+      "description": "An honest, systematic job search: a ten minute verdict on any job, then a full search that finds openings, judges each against your real evidence, prepares applications you send yourself, coaches you for interviews and learns from every result."
+    }
+  ]
+}

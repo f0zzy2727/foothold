@@ -1,0 +1,17 @@
+{
+  "name": "job-search",
+  "version": "0.7.0",
+  "description": "An honest, systematic job search: a ten minute verdict on any job, then a full search that finds openings, judges each against your real evidence, prepares applications you send yourself, coaches you for interviews and learns from every result.",
+  "author": {
+    "name": "LUGHa"
+  },
+  "keywords": [
+    "job search",
+    "cv",
+    "careers",
+    "interview"
+  ],
+  "homepage": "https://github.com/f0zzy2727/foothold",
+  "repository": "https://github.com/f0zzy2727/foothold",
+  "license": "MIT"
+}

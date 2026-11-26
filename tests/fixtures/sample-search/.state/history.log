@@ -1,0 +1,24 @@
+2026-11-26 | harbour-hall-production-assistant | queued | 
+2026-11-26 | harbour-hall-production-assistant | analysed | 
+2026-11-26 | northside-festival-site-crew | queued | 
+2026-11-26 | northside-festival-site-crew | analysed | 
+2026-11-26 | quay-street-venue-stage-assistant | queued | 
+2026-11-26 | quay-street-venue-stage-assistant | analysed | 
+2026-11-26 | riverbank-promotions-events-assistant | queued | 
+2026-11-26 | riverbank-promotions-events-assistant | analysed | 
+2026-11-26 | city-arts-centre-technician | queued | 
+2026-11-26 | city-arts-centre-technician | analysed | 
+2026-11-26 | tidal-records-label-assistant | queued | 
+2026-11-26 | tidal-records-label-assistant | analysed | 
+2026-11-26 | tidal-records-label-assistant | closed | skip
+2026-11-26 | harbour-hall-production-assistant | go | 
+2026-11-26 | northside-festival-site-crew | go | 
+2026-11-26 | quay-street-venue-stage-assistant | go | 
+2026-11-26 | city-arts-centre-technician | go | 
+2026-11-26 | harbour-hall-production-assistant | ready | 
+2026-11-26 | northside-festival-site-crew | ready | 
+2026-11-26 | city-arts-centre-technician | ready | 
+2026-11-26 | city-arts-centre-technician | applied | 
+2026-11-26 | harbour-hall-production-assistant | applied | 
+2026-11-26 | harbour-hall-production-assistant | interview | 2026-12-03 10:00
+2026-11-26 | dockyard-studios-runner | queued | 

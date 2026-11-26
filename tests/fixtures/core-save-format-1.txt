@@ -1,0 +1,164 @@
+JOB-SEARCH-SAVE v1 | core | files=12 | sha256=96c53d4b59d3ae5dd1eab9128719057d8b66e47d1f10d13eeff10ee3740577be
+=====8<===== FILE: settings.md
+# config.md
+
+Settings the coordinator reads on every run. All values are starting
+defaults, not evidence-based targets. Review them at the first monthly retro.
+
+## Cadence
+
+- Scout: weekdays
+- Weekly review: Friday
+- Monthly retro: first Monday of the month
+- Research refresh: every 90 days, or when a retro recommends it
+
+## Limits
+
+- Active opportunities (status `go`, `ready`, `applied` or `interview`): 5
+- New promotions per run: 3
+- Items in `NEXT.md`: 3
+- Questions surfaced at once: 1
+
+## Thresholds that trigger an early retro
+
+- 10 applications sent with no reply of any kind
+- 3 interviews with no offer
+- 15 working days with no new screened-in signal
+
+## Screening
+
+- Minimum scout score to promote (1 to 5): 3
+- Hard filters: taken from `profile/target.md` (locations, contract types,
+  level, deal-breakers)
+
+## Checks
+
+- Attempts to fix a failing check before stopping and telling the candidate: 2
+
+## Notifications
+
+If the environment offers a notification or message tool, send the contents of
+`NEXT.md` whenever it changes. Otherwise write the file only.
+=====8<===== FILE: questions.md
+# Questions
+
+One global queue. Only the first unanswered question is shown in `NEXT.md`.
+Answer in chat, or here on the line beginning `A:`. Answers are copied into
+`profile/evidence-bank.md` on the next run, and the question is marked
+`[answered <date>]`.
+
+Format:
+
+Q1 [affects: <opportunity>, <opportunity>] <question>
+A:
+=====8<===== FILE: NEXT.md
+# Next
+
+Written by the script from the state of your search. At most three items.
+
+1. Your turn: Read and send your application to Testville Hall, Production Assistant. Closes 20 December.
+2. Your turn: Research your field. Switch Research on and say "Research my field".
+=====8<===== FILE: pipeline.md
+# Pipeline
+
+Built automatically. Do not edit by hand.
+Last built: 2026-11-26
+
+| Opportunity | Type | Verdict | Status | Since | Closes | Next step | Owner |
+|---|---|---|---|---|---|---|---|
+| testville-hall-production-assistant | advert | Worth tailoring | ready | 2026-11-26 | 2026-12-20 | read the pack and send it | candidate |
+=====8<===== FILE: .state/history.log
+2026-11-26 | testville-hall-production-assistant | queued | 
+2026-11-26 | testville-hall-production-assistant | analysed | 
+2026-11-26 | testville-hall-production-assistant | go | 
+2026-11-26 | testville-hall-production-assistant | ready | 
+=====8<===== FILE: .state/events.log
+2026-11-26 10:48 | run | regression test
+=====8<===== FILE: .state/index.json [no final newline]
+{
+ "testville-hall-production-assistant": {
+  "verdict": "Worth tailoring",
+  "closes": "2026-12-20",
+  "type": "advert",
+  "title": "Testville Hall, Production Assistant"
+ }
+}
+=====8<===== FILE: profile/candidate.md
+# Candidate
+
+Filled in by stage 0 (intake). Unknowns stay marked `unknown`; do not guess.
+
+- Name:
+- Based in:
+- Able to relocate or travel:
+- Available from:
+- Right to work in the target locations (yes, no, unknown):
+
+## Background in brief
+
+## Education and training
+
+## Work, paid and unpaid
+
+## Projects, portfolio and credits
+<links and a one-line description each>
+
+## People and networks
+<who the candidate already knows in or near the sector; names only with consent>
+
+## What has been tried so far
+<applications made, responses received, what seemed to work or not>
+
+## How the candidate prefers to work with this system
+<chat or files, how often, best time for a weekly review>
+=====8<===== FILE: profile/cv/cv-master.md
+Sam Example
+Volunteer stage crew, Testville Arts Festival, 2024 and 2025. Ran load-in for 12 acts.
+Bar supervisor 2023 to 2025. Excel rotas.
+=====8<===== FILE: profile/evidence-bank.md
+# Evidence bank
+
+The only source of facts about the candidate beyond the master CV. Every claim
+in a tailored CV or covering note must trace to a line here or to the CV. The
+checking script enforces this.
+
+Rules:
+- One fact per line, in this form:
+  `- E001 | 2026-01-31 | intake | <what was done, the scale, the result, and where proof can be found>`
+- Ids run E001, E002, E003 and are never reused or renumbered.
+- The third field says where the fact came from: `intake`, `answer Q7`, or
+  `debrief <opportunity>`.
+- Append only. To correct a fact, add a new line and end the old one with
+  `(superseded by E0nn)`.
+- Nothing inferred. If the candidate did not say it, it does not go here.
+
+## Facts
+- E001 | 2026-11-26 | intake | Stage crew volunteer at Testville Arts Festival 2024 and 2025, load-in for 12 acts
+- E002 | 2026-11-26 | intake | Built weekly rotas in Excel for 9 bar staff
+
+## Known gaps, stated by the candidate
+=====8<===== FILE: profile/target.md
+# Target
+
+What the search is aiming at. The scout uses this for hard filters. Changes
+after setup go through Gate C (a retro proposal the candidate approves).
+
+- Sector pack: music-industry
+- Segments within the sector, in priority order: live, venues
+- Role types and titles: production assistant
+- Level (entry, early career, experienced, senior): entry
+- Locations, including remote: Testville
+- Contract types acceptable (permanent, fixed term, freelance, internship):
+- Minimum pay, if any:
+- Hours and availability constraints:
+
+## Deal-breakers
+<anything that screens a role out immediately>
+
+## What success looks like
+<the outcome the candidate wants, and by when>
+
+## Willing to do to get there
+<stepping-stone roles, volunteering, further training, relocation>
+=====8<===== FILE: opportunities/testville-hall-production-assistant/STATUS
+ready | 2026-11-26 | 

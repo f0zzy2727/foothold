@@ -1,0 +1,14 @@
+{
+ "places": [
+  {
+   "name": "Crew Call members group",
+   "link": "https://example.org/crew-call",
+   "why": "No, members only"
+  },
+  {
+   "name": "Venue staff noticeboards",
+   "link": "",
+   "why": "No, in person"
+  }
+ ]
+}

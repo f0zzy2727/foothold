@@ -1,0 +1,38 @@
+{
+ "city-arts-centre-technician": {
+  "verdict": "Worth tailoring",
+  "closes": "2026-11-22",
+  "type": "advert",
+  "title": "City Arts Centre, Junior Technician"
+ },
+ "harbour-hall-production-assistant": {
+  "verdict": "Worth tailoring",
+  "closes": "2026-12-20",
+  "type": "advert",
+  "title": "Harbour Hall, Production Assistant"
+ },
+ "northside-festival-site-crew": {
+  "verdict": "Strong fit",
+  "closes": "2026-11-28",
+  "type": "advert",
+  "title": "Northside Festival, Site Crew"
+ },
+ "quay-street-venue-stage-assistant": {
+  "verdict": "Worth tailoring",
+  "closes": "2026-12-05",
+  "type": "advert",
+  "title": "Quay Street Venue, Stage Assistant"
+ },
+ "riverbank-promotions-events-assistant": {
+  "verdict": "Stretch",
+  "closes": "2026-12-12",
+  "type": "advert",
+  "title": "Riverbank Promotions, Events Assistant"
+ },
+ "tidal-records-label-assistant": {
+  "verdict": "Skip",
+  "closes": "2026-12-01",
+  "type": "advert",
+  "title": "Tidal Records, Label Assistant"
+ }
+}
