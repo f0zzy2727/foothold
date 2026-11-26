@@ -1,24 +1,28 @@
 # Changelog
 
-## Unreleased
+## 0.10.0, 2026-11-26
 
-No change to the plugin or the search format.
+No change to the search format.
 
 Added
+- For developers: typing "Load the test search" in a new project loads a
+  ready-made search for an invented person, with the interview and the
+  research already done, so the rest of the flow can be tested in minutes.
+  Every date is moved to today. It loads only into a project with no search
+  in it, and no skill offers it. `CONTRIBUTING.md` says how to use it.
+- The script has a matching command, `test-search`.
 - The page that explains the search has a switch for light and dark. It
   follows the device until the reader chooses, and the choice is kept in that
   browser only.
-
-- For developers: `scripts/test-search.py` builds a ready-made search for
-  an invented person, so the flow can be tested in the Claude app without
-  the interview or the research. `CONTRIBUTING.md` says how. It is not in
-  the plugin.
 
 Changed
 - The instructions a person pastes into their project have their own page,
   `PROJECT-INSTRUCTIONS.md`. Step 3 of `SETUP.md` and the page that explains
   the search link to it. The text itself is unchanged. The page links to the
   full setup guide beside its six steps.
+- The invented search the tests run against moved from `tests/fixtures/`
+  into the plugin, so the tests and the test search are one set of files.
+  It gained two invented target organisations.
 
 ## 0.9.1, 2026-11-26
 

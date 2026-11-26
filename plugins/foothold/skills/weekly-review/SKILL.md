@@ -6,7 +6,7 @@ description: >
   is my search going", "review my week", "monthly review", "is my search
   working", "what should change", or a scheduled task that names this skill.
 metadata:
-  version: "0.9.1"
+  version: "0.10.0"
 ---
 
 # Weekly review

@@ -8,7 +8,7 @@ description: >
   "add this job to my search", "I found a job", "I followed up", "I know
   someone at", "I've changed what I'm looking for", "pause my search", and "help" or "what can you do" in the context of a job search.
 metadata:
-  version: "0.9.1"
+  version: "0.10.0"
 ---
 
 # My search

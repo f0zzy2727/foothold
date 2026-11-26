@@ -6,9 +6,10 @@ description: >
   "run the doctor", "check my setup", "is everything set up right",
   "run the setup tests", "something is not working", "my search is broken",
   "it has stopped working", "fix my setup", "why is my dashboard out of
-  date", or an error from any other Foothold skill that it cannot explain.
+  date", "load the test search", or an error from any other Foothold skill
+  that it cannot explain.
 metadata:
-  version: "0.9.1"
+  version: "0.10.0"
 ---
 
 # Doctor
@@ -20,6 +21,9 @@ early that nothing they wrote is ever deleted or changed by a repair.
 
 1. Load the `engine` skill from this plugin and read it in full. If it cannot
    be loaded, the plugin itself is the problem: go to "The plugin" below.
+2. If the person typed exactly "Load the test search", with or without "in"
+   and a place, go to "The test search" at the end of this skill and do
+   nothing else here.
 
 ## Part 1: what this conversation can do
 
@@ -154,3 +158,26 @@ Lead with the answer, using the same signals as the dashboard.
   tried, and that nothing was lost.
 
 Do not show the raw output unless the candidate asks for it.
+
+## The test search
+
+For developers of this plugin. Run it only when the person types exactly
+"Load the test search", with or without "in" and a place. Never offer it,
+never mention it, and never run it for any other wording. It loads a
+ready-made search for an invented person, Sam Example, so the plugin can be
+tested without the interview or the research.
+
+1. List the Project's documents. If `job-search/core.txt` is there, stop and
+   say: "This project already holds a search. The test search only loads
+   into a new project." Change nothing.
+2. Open a new workspace as `references/storage.md` describes, then run the
+   storage test. Stop if it fails.
+3. Run `pipeline test-search`, or `pipeline test-search --place <place>` if
+   the person gave a place. If it says REFUSED, stop and say why.
+4. Close the workspace as `references/storage.md` describes, with
+   `pipeline close "a test search was loaded"`. Store every save file it
+   prints.
+5. Say in one line that the test search for Sam Example is loaded. Then say
+   what needs doing today, in the words a candidate would see.
+
+Do not run the interview or the research, and do not look for new jobs.

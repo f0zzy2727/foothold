@@ -100,7 +100,7 @@ every job it affects gets a fresh verdict.
 
 ## Status
 
-Version 0.9.1. An early pilot.
+Version 0.10.0. An early pilot.
 
 **Tested**, by the automated suite in this repository: the honesty checks
 against a deliberately dishonest application, an advert with instructions
@@ -154,9 +154,8 @@ The full text is in [DISCLAIMER.md](DISCLAIMER.md).
 | `PROJECT-INSTRUCTIONS.md` | The text a person pastes into their project. A test keeps it identical to the plugin's own copy |
 | `plugins/foothold/` | The plugin: ten skills, the specialist briefs, the templates and one script |
 | `.claude-plugin/marketplace.json` | Lets Claude install the plugin from this repository |
-| `tests/` | The test suite and an invented sample search it runs against |
+| `tests/` | The test suite. It runs against the invented search the plugin ships in `references/test-search/` |
 | `scripts/package.sh` | Runs the tests, then builds `dist/foothold.plugin` |
-| `scripts/test-search.py` | Builds a ready-made search for an invented person, to test in the Claude app without the interview or the research. `CONTRIBUTING.md` says how |
 | `CHANGELOG.md` | What changed in each version |
 | `MIGRATIONS.md` | The rule for changing a file format, so old searches keep working |
 
@@ -177,7 +176,7 @@ To release a version:
    in every `SKILL.md`. A test fails if they disagree.
 2. If a file in a person's saved search changed shape, follow `MIGRATIONS.md`.
 3. Add an entry to `CHANGELOG.md`.
-4. Run the tests, commit, then tag and push: `git tag v0.9.1` and
+4. Run the tests, commit, then tag and push: `git tag v0.10.0` and
    `git push --tags`. The release workflow builds the upload file and
    attaches it to a GitHub release.
 
@@ -185,8 +184,8 @@ What a script cannot test: whether Claude follows the skills as written, the
 quality of a verdict, a real Research mode run, and whether a scheduled task
 can reach a Project. Those need real use, which is what the pilot is for.
 
-Nothing in this repository is about a real person. The sample search in
-`tests/fixtures/` is invented.
+Nothing in this repository is about a real person. The search the tests run
+against, in the plugin's `references/test-search/`, is invented.
 
 ## Contributing, security, licence
 

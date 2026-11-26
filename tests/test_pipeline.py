@@ -5,7 +5,7 @@ Run from the repository root:
     python3 -m unittest discover -s tests -v
 
 Standard library only. Every test works on a throwaway copy of an invented
-search (tests/fixtures/sample-search) with the date pinned, so results do not
+search (the plugin's references/test-search) with the date pinned, so results do not
 depend on the day the tests run.
 """
 import hashlib
@@ -25,6 +25,7 @@ REPO = Path(__file__).resolve().parents[1]
 PLUGIN = Path(os.environ.get("JOB_SEARCH_PLUGIN", REPO / "plugins" / "foothold"))
 SCRIPT = PLUGIN / "skills" / "engine" / "scripts" / "pipeline.py"
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+SAMPLE = PLUGIN / "skills" / "engine" / "references" / "test-search"     # the invented search the plugin ships
 DAY = "2026-11-26"
 READY = "northside-festival-site-crew"       # status ready, closes 2026-11-28
 APPLIED = "city-arts-centre-technician"      # status applied on 2026-11-12
@@ -45,7 +46,7 @@ class Case(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp(prefix="job-search-test-"))
         self.ws = self.tmp / "ws"
-        shutil.copytree(FIXTURES / "sample-search", self.ws)
+        shutil.copytree(SAMPLE, self.ws)
         for empty in ("inbox", "reviews", "signals", "profile/cv", "profile/projects"):
             (self.ws / empty).mkdir(parents=True, exist_ok=True)     # git does not keep empty folders
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
@@ -193,49 +194,49 @@ class Basics(Case):
                 done = subprocess.run([node, "--check", str(source)], capture_output=True, text=True)
                 self.assertEqual(done.returncode, 0, f"{page.name}: {done.stderr}")
 
-    def test_a_ready_made_test_search_builds_and_loads(self):
-        builder = REPO / "scripts" / "test-search.py"
-        if not builder.exists():
-            self.skipTest("the builder is only in the repository, not in the plugin alone")
-        self.assertIn(f'SAMPLE_DAY = "{DAY}"', builder.read_text(), "the builder and the tests disagree on the sample's day")
-        later, out = "2027-03-09", self.tmp / "test-search"      # another month and another year
-        build = lambda *extra: subprocess.run([sys.executable, str(builder), "--today", later, *extra],
-                                              capture_output=True, text=True)
-        done = build("--out", str(out), "--place", "Dublin")
-        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
-        # Load it as the prompt tells Claude to: a new cloud workspace, the everyday save first.
-        home = self.tmp / "loaded"
+    def test_the_test_search_loads_into_a_new_workspace_only(self):
+        self.assertIn(f'TEST_DAY = "{DAY}"', SCRIPT.read_text(), "the script and the tests disagree on the sample's day")
+        later, home = "2027-03-09", self.tmp / "new"       # another month and another year
         self.run_cmd("init", str(home), "--cloud")
-        aside = ("core.txt", "latest.txt", "PROMPT.txt", "sam-example-cv.txt")
-        rest = sorted(str(p) for p in out.glob("*.txt") if p.name not in aside)
-        code, text = self.run_cmd("restore", str(out / "core.txt"), *rest, home=home, day=later)
+        self.run_cmd("storage-test", "make", home=home, day=later)
+        code, text = self.run_cmd("test-search", "--place", "Dublin", home=home, day=later)
         self.assertEqual(code, 0, text)
-        self.assertNotIn("REFUSED", text)
-        code, text = self.run_cmd("check", home=home, day=later)
+        self.assertEqual((home / ".job-search").read_text().split()[-1], "cloud", "loading changed where the search is kept")
+        code, text = self.run_cmd("close", "a test search was loaded", home=home, day=later)
         self.assertEqual(code, 0, text)
-        self.run_cmd("dashboard", home=home, day=later)
+        # A first close stores everything, so the whole search reaches the project.
+        saved = set(re.findall(r"store as  job-search/(\S+)", text))
+        self.assertTrue({"core.txt", "research.txt", "latest.txt", "signals-2027-02.txt", "signals-2027-03.txt"} <= saved, saved)
+        self.assertEqual(len([name for name in saved if name.startswith("opp-")]), 6)
         # On the new day the search reads as the sample does on its own day.
         relative = lambda f: [line for line in f.read_text().splitlines() if "Closes in" in line or "days ago" in line]
         self.assertTrue(relative(home / "NEXT.md"))
-        self.assertEqual(relative(home / "NEXT.md"), relative(FIXTURES / "sample-search" / "NEXT.md"))
-        self.assertEqual(sorted(p.name for p in (home / "signals").glob("*.md")), ["2027-02.md", "2027-03.md"])
+        self.assertEqual(relative(home / "NEXT.md"), relative(SAMPLE / "NEXT.md"))
         target = (home / "profile" / "target.md").read_text()
         self.assertIn("Dublin", target)
         self.assertNotIn("Testville", target)
         # Nothing in it sends Claude back to the interview or the research.
         _, text = self.run_cmd("doctor", home=home, day=later)
         self.assertNotRegex(text, r"(?m)^(REDO|NEEDS YOU)\s+(Research|The interview)")
-        code, _ = self.run_cmd("research-brief", home=home, day=later)
-        self.assertEqual(code, 0)
-        with zipfile.ZipFile(out / "test-search.zip") as z:
-            self.assertEqual(sorted(z.namelist()), sorted(p.name for p in out.glob("*.txt") if p.name not in aside[2:]))
-        # It rebuilds its own folder, and never clears one it did not write.
-        self.assertEqual(build("--out", str(out)).returncode, 0)
-        mine = self.tmp / "mine"
-        mine.mkdir()
-        (mine / "keep.txt").write_text("keep")
-        self.assertNotEqual(build("--out", str(mine)).returncode, 0)
-        self.assertEqual((mine / "keep.txt").read_text(), "keep")
+        self.assertEqual(self.run_cmd("research-brief", home=home, day=later)[0], 0)
+        # It never loads over a search, a loaded test search included.
+        for holds_a_search, day in ((home, later), (self.ws, DAY)):
+            before = tree_hash(holds_a_search)
+            code, text = self.run_cmd("test-search", home=holds_a_search, day=day)
+            self.assertEqual(code, 1)
+            self.assertIn("REFUSED", text)
+            self.assertEqual(tree_hash(holds_a_search), before)
+
+    def test_only_the_doctor_knows_the_test_search_and_never_offers_it(self):
+        for skill in sorted((PLUGIN / "skills").glob("*/SKILL.md")):
+            text = skill.read_text()
+            if skill.parent.name == "doctor":
+                self.assertIn('exactly "Load the test search"', text)
+                self.assertIn("Never offer it", text)
+            else:
+                self.assertNotIn("test search", text.lower(), skill.parent.name)
+        for page in ("project-instructions.md", "how-it-works.md"):
+            self.assertNotIn("test search", (PLUGIN / "skills/engine/references" / page).read_text().lower(), page)
 
     def test_help_lists_every_command(self):
         commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]

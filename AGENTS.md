@@ -29,7 +29,9 @@ are new to AI. Everything they see must be plain.
   https://f0zzy2727.github.io/foothold/how-it-works.html
 - `FACTS.md`: what has been learned about how the plugin behaves in the
   Claude app. Read it before changing storage, folders or setup.
-- `tests/`: the test suite and an invented sample search.
+- `tests/`: the test suite. It runs against the invented search in the
+  plugin's `references/test-search/`, which a developer can also load in the
+  Claude app by typing "Load the test search". `CONTRIBUTING.md` says how.
 - `MIGRATIONS.md`: the rule for changing any file in a person's saved search.
 
 ## Commands
@@ -37,7 +39,6 @@ are new to AI. Everything they see must be plain.
 ```
 python3 -m unittest discover -s tests -v     # run before and after every change
 scripts/package.sh                           # tests, then dist/foothold.plugin
-scripts/test-search.py                       # a ready-made search to load in the Claude app. See CONTRIBUTING.md
 claude plugin validate .                     # if the claude CLI is present
 ```
 

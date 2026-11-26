@@ -13,6 +13,7 @@ Setting up and looking after a search
     pipeline.py storage-test found <file>   recognise a test file left by an earlier conversation
     pipeline.py doctor [--fix]              check the whole setup; --fix repairs what is safe
     pipeline.py migrate                     bring an older search up to the current format
+    pipeline.py test-search [--place <where>]   developers only: fill a new workspace with an invented search
 
 Checking the work
     pipeline.py check                       whole workspace
@@ -1724,6 +1725,68 @@ def cmd_init(args):
     return 0
 
 
+# ---------- the test search ----------
+# For developers. A ready-made search for an invented person, so the plugin
+# can be tested without the interview or the research run. It loads only
+# into a new, empty workspace, and no skill offers it to a candidate.
+
+TEST_DAY = "2026-11-26"         # the day the search in references/test-search was written for
+TEST_PLACE = "Testville"
+ISO_DATE = re.compile(r"(?<!\d)(20\d{2})-(\d{2})-(\d{2})(?!\d)")
+
+
+def cmd_test_search(args):
+    place = TEST_PLACE
+    if args[:1] == ["--place"] and len(args) > 1:
+        place = " ".join(args[1:])
+    elif args:
+        print("usage: test-search [--place <where>]")
+        return 1
+    seed = ASSETS / "seed" / "profile"
+    if (opp_dirs() or (STATE / "generation.txt").exists()
+            or any(read(ROOT / "profile" / f) != read(seed / f) for f in ("target.md", "evidence-bank.md"))):
+        print("REFUSED  this workspace already holds a search. The test search loads only into a new, empty one")
+        return 1
+    days = (TODAY - datetime.date.fromisoformat(TEST_DAY)).days
+
+    def moved(m):
+        try:
+            day = datetime.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        except ValueError:
+            return m.group(0)
+        return (day + datetime.timedelta(days=days)).isoformat()
+
+    sample = ASSETS / "test-search"
+    files = [p for p in sorted(sample.rglob("*")) if p.is_file() and is_text(p) and p.name != MARKER]
+    for src in files:
+        dest = ROOT / src.relative_to(sample)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        text = ISO_DATE.sub(moved, src.read_text(encoding="utf-8"))
+        dest.write_text(text.replace(TEST_PLACE, place), encoding="utf-8")
+    # The signals log is one file a month. With the dates moved, a row may
+    # belong to another month, so the rows are dealt out again.
+    head, months, month = None, {}, None
+    for f in sorted((ROOT / "signals").glob("*.md")):
+        lines = f.read_text(encoding="utf-8").splitlines()
+        cut = next(i for i, line in enumerate(lines) if line.startswith("|---")) + 1
+        head = head or lines[1:cut]
+        for row in lines[cut:]:
+            m = ISO_DATE.search(row.split("|")[1]) if row.startswith("|") else None
+            month = m.group(0)[:7] if m else month
+            if month and row.strip():
+                months.setdefault(month, []).append(row)
+        f.unlink()
+    for month, rows in months.items():
+        (ROOT / "signals" / f"{month}.md").write_text(
+            "\n".join([f"# Signals log: {month}"] + head + rows) + "\n", encoding="utf-8")
+    counts = STATE / "signal-counts.json"       # a cache keyed by month. It is counted again at the next save
+    if counts.exists():
+        counts.unlink()
+    print(f"OK  loaded the test search: Sam Example, an invented person, set in {place}, as of {TODAY.isoformat()} "
+          f"({len(files)} files). Close the workspace to build the dashboard and save it")
+    return 0
+
+
 # ---------- cloud save and restore ----------
 # A save file is plain text: a header, then each file between marker lines.
 # The header carries a checksum of everything after it, so a save file that
@@ -2589,7 +2652,8 @@ COMMANDS = {"check": cmd_check, "set": cmd_set, "pipeline": cmd_pipeline,
             "unarchive": cmd_unarchive, "followed-up": cmd_followed_up,
             "checked-sources": cmd_checked_sources, "newfiles": cmd_newfiles,
             "guard": cmd_guard, "migrate": cmd_migrate, "storage-test": cmd_storage_test,
-            "export": cmd_export, "leverage": cmd_leverage, "project": cmd_project}
+            "export": cmd_export, "leverage": cmd_leverage, "project": cmd_project,
+            "test-search": cmd_test_search}
 
 if __name__ == "__main__":
     argv = sys.argv[1:]
