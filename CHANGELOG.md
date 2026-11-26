@@ -9,6 +9,11 @@ Added
   follows the device until the reader chooses, and the choice is kept in that
   browser only.
 
+Changed
+- The instructions a person pastes into their project have their own page,
+  `PROJECT-INSTRUCTIONS.md`. Step 3 of `SETUP.md` and the page that explains
+  the search link to it. The text itself is unchanged.
+
 ## 0.9.1, 2026-11-26
 
 No change to the search format.

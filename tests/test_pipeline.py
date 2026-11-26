@@ -102,15 +102,33 @@ class Basics(Case):
             self.assertEqual(entry["name"], manifest["name"])
             self.assertTrue((REPO / entry["source"] / ".claude-plugin" / "plugin.json").exists())
 
-    def test_setup_guide_carries_the_same_instructions_as_the_plugin(self):
-        guide = (REPO / "SETUP.md")
+    def test_instructions_page_carries_the_same_instructions_as_the_plugin(self):
+        guide = REPO / "SETUP.md"
         if not guide.exists():
             self.skipTest("SETUP.md is only in the repository, not in the plugin alone")
+        page = REPO / "PROJECT-INSTRUCTIONS.md"
+        self.assertTrue(page.is_file(), "the instructions have no page of their own")
         block = re.search(r"<!-- project-instructions:start -->\n```text\n(.*?)\n```\n<!-- project-instructions:end -->",
-                          guide.read_text(), re.S)
-        self.assertIsNotNone(block, "SETUP.md has no instructions block")
+                          page.read_text(), re.S)
+        self.assertIsNotNone(block, "PROJECT-INSTRUCTIONS.md has no instructions block")
         plugin_copy = (PLUGIN / "skills/engine/references/project-instructions.md").read_text().rstrip("\n")
         self.assertEqual(block.group(1), plugin_copy)
+        # The setup guide points at that page and keeps no copy of its own.
+        setup = guide.read_text()
+        self.assertIn("(PROJECT-INSTRUCTIONS.md)", setup)
+        self.assertNotIn("project-instructions:start", setup)
+        self.assertNotRegex(setup, r"(?m)^EXPECTATIONS$")
+        # Every file the pages link to in the repository is there, anchors included.
+        for place in (guide, page, REPO / "README.md", REPO / "docs" / "how-it-works.html"):
+            text = place.read_text()
+            names = re.findall(r"\]\(([A-Z][\w.-]*\.md)(#[\w-]+)?\)", text)
+            names += re.findall(r"github\.com/f0zzy2727/foothold/blob/main/([\w./-]+\.md)(#[\w-]+)?", text)
+            for name, anchor in names:
+                self.assertTrue((REPO / name).is_file(), f"{place.name} links to {name}")
+                if anchor:
+                    headings = {"#" + re.sub(r"[^\w -]", "", h).lower().replace(" ", "-")
+                                for h in re.findall(r"(?m)^#+ (.+)$", (REPO / name).read_text())}
+                    self.assertIn(anchor, headings, f"{place.name} links to {name}{anchor}")
         for heading in ("ROLE", "ACTION", "CONTEXT", "EXPECTATIONS"):
             self.assertRegex(plugin_copy, rf"(?m)^{heading}$")
         for skill in sorted(p.name for p in (PLUGIN / "skills").iterdir() if p.name != "engine"):

@@ -39,7 +39,8 @@ The short version:
 1. Add the plugin to Claude: Customize, then Plugins, then Add marketplace,
    and paste `f0zzy2727/foothold`.
 2. Create a project called "My job search".
-3. Paste the instructions from SETUP.md into the project.
+3. Paste the instructions from
+   [PROJECT-INSTRUCTIONS.md](PROJECT-INSTRUCTIONS.md) into the project.
 4. Add your CV.
 5. Type `Run the setup tests`, then paste an advert and type
    `Is this job right for me?`
@@ -149,7 +150,8 @@ The full text is in [DISCLAIMER.md](DISCLAIMER.md).
 
 | Path | What it is |
 |---|---|
-| `SETUP.md` | The one page a new person follows, with the project instructions and the bootstrap tests |
+| `SETUP.md` | The one page a new person follows, with the bootstrap tests |
+| `PROJECT-INSTRUCTIONS.md` | The text a person pastes into their project. A test keeps it identical to the plugin's own copy |
 | `plugins/foothold/` | The plugin: ten skills, the specialist briefs, the templates and one script |
 | `.claude-plugin/marketplace.json` | Lets Claude install the plugin from this repository |
 | `tests/` | The test suite and an invented sample search it runs against |

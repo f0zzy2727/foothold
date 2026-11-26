@@ -15,9 +15,12 @@ are new to AI. Everything they see must be plain.
   The `engine` skill holds the method, the specialist briefs
   (`references/team/`), the templates, the starter workspace
   (`references/seed/`) and one script, `scripts/pipeline.py`.
-- `SETUP.md`: the one page a new person follows. Its instructions block must
-  stay identical to `plugins/foothold/skills/engine/references/project-instructions.md`.
-  A test enforces this.
+- `SETUP.md`: the one page a new person follows. Step 3 links to
+  `PROJECT-INSTRUCTIONS.md` and must not carry the text itself.
+- `PROJECT-INSTRUCTIONS.md`: the text a person pastes into their project. Its
+  block must stay identical to
+  `plugins/foothold/skills/engine/references/project-instructions.md`, the
+  copy the plugin ships. A test enforces both points.
 - `docs/how-it-works.html`: the page that explains the search to a new
   person. It shares its look with the dashboard template
   (`references/dashboard-template.html`). Neither page may load anything from

@@ -261,7 +261,7 @@ footer{font-size:.875rem;color:var(--ink-2);max-width:72ch;display:flex;flex-dir
 
 <script>
 (function(){
-const GUIDE = "https://github.com/f0zzy2727/foothold/blob/main/SETUP.md";
+const INSTRUCTIONS = "https://github.com/f0zzy2727/foothold/blob/main/PROJECT-INSTRUCTIONS.md";
 const GROUPS = [["Once",2],["Weekdays",1],["For each job",5],["Ongoing",2]];
 const STEPS = [
  {id:"know-you", short:"Get to know you", you:true, title:"Get to know you",
@@ -334,8 +334,8 @@ const SETUP = [
  {t:"Create a project", mins:"1 minute", parts:[
    ["p","Go to Projects and choose New project. Call it \"My job search\". A project is where Claude keeps your search between conversations. Always talk to Claude about your search inside it."]]},
  {t:"Paste the instructions", mins:"2 minutes", parts:[
-   ["p","Open the project's instructions and paste in the text from step 3 of the setup guide. It tells Claude how to run your search and what it must never do."],
-   ["a","Open the setup guide", GUIDE + "#step-3-paste-the-instructions"]]},
+   ["p","Open the instructions page and copy everything in the box. Then open your project's instructions in Claude and paste it in. The text tells Claude how to run your search and what it must never do."],
+   ["a","Open the instructions", INSTRUCTIONS]]},
  {t:"Add your CV", mins:"1 minute", parts:[
    ["p","Add your CV to the project as a file. Word, PDF or plain text all work."]]},
  {t:"Check it works", mins:"About 10 minutes", parts:[
