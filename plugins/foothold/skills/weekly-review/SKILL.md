@@ -2,7 +2,7 @@
 name: weekly-review
 description: >
   This skill should be used to review progress on an existing job search.
-  Triggers include "run the job-search weekly-review", "weekly review", "how
+  Triggers include "run the foothold weekly-review", "weekly review", "how
   is my search going", "review my week", "monthly review", "is my search
   working", "what should change", or a scheduled task that names this skill.
 metadata:

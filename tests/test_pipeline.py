@@ -1,4 +1,4 @@
-"""Tests for the job-search plugin's script.
+"""Tests for the Foothold plugin's script.
 
 Run from the repository root:
 
@@ -22,7 +22,7 @@ from pathlib import Path
 from xml.dom import minidom
 
 REPO = Path(__file__).resolve().parents[1]
-PLUGIN = Path(os.environ.get("JOB_SEARCH_PLUGIN", REPO / "plugins" / "job-search"))
+PLUGIN = Path(os.environ.get("JOB_SEARCH_PLUGIN", REPO / "plugins" / "foothold"))
 SCRIPT = PLUGIN / "skills" / "engine" / "scripts" / "pipeline.py"
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 DAY = "2026-11-26"
@@ -115,6 +115,20 @@ class Basics(Case):
             self.assertRegex(plugin_copy, rf"(?m)^{heading}$")
         for skill in sorted(p.name for p in (PLUGIN / "skills").iterdir() if p.name != "engine"):
             self.assertIn(skill, plugin_copy, f"the instructions do not mention {skill}")
+
+    def test_the_plugin_has_one_name_everywhere_a_person_meets_it(self):
+        guide = REPO / "SETUP.md"
+        if not guide.exists():
+            self.skipTest("SETUP.md is only in the repository, not in the plugin alone")
+        name = json.loads((PLUGIN / ".claude-plugin" / "plugin.json").read_text())["name"]
+        self.assertEqual(PLUGIN.name, name, "the plugin's folder and its name differ")
+        self.assertIn(f"called **{name}**", guide.read_text())
+        self.assertIn(f"`{name}.plugin`", guide.read_text())
+        self.assertIn(f"Add the plugin called {name} and",
+                      (PLUGIN / "skills/engine/references/project-instructions.md").read_text())
+        self.assertIn(f"dist/{name}.plugin", (REPO / "scripts" / "package.sh").read_text())
+        self.assertIn(f"dist/{name}.plugin", (REPO / ".github/workflows/release.yml").read_text())
+        self.assertIn(f"called {name} and", (REPO / "docs" / "how-it-works.html").read_text())
 
     def pages(self):
         """The two pages a candidate opens: the dashboard template, and the

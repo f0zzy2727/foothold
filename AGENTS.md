@@ -5,18 +5,18 @@ this repository. People should read README.md and SETUP.md instead.
 
 ## What this is
 
-A Claude plugin, `job-search`, that runs an honest job search for one person.
+A Claude plugin, `foothold`, that runs an honest job search for one person.
 The repository is also the marketplace that serves it. The people who use it
 are new to AI. Everything they see must be plain.
 
 ## Layout
 
-- `plugins/job-search/`: the plugin. Skills are in `skills/<name>/SKILL.md`.
+- `plugins/foothold/`: the plugin. Skills are in `skills/<name>/SKILL.md`.
   The `engine` skill holds the method, the specialist briefs
   (`references/team/`), the templates, the starter workspace
   (`references/seed/`) and one script, `scripts/pipeline.py`.
 - `SETUP.md`: the one page a new person follows. Its instructions block must
-  stay identical to `plugins/job-search/skills/engine/references/project-instructions.md`.
+  stay identical to `plugins/foothold/skills/engine/references/project-instructions.md`.
   A test enforces this.
 - `docs/how-it-works.html`: the page that explains the search to a new
   person. It shares its look with the dashboard template
@@ -33,7 +33,7 @@ are new to AI. Everything they see must be plain.
 
 ```
 python3 -m unittest discover -s tests -v     # run before and after every change
-scripts/package.sh                           # tests, then dist/job-search.plugin
+scripts/package.sh                           # tests, then dist/foothold.plugin
 claude plugin validate .                     # if the claude CLI is present
 ```
 
@@ -48,7 +48,7 @@ claude plugin validate .                     # if the claude CLI is present
 4. A change to any file format in a saved search follows `MIGRATIONS.md`:
    raise the format number, add a migration step, add a test. Old searches
    must keep working.
-5. To release: change the version in `plugins/job-search/.claude-plugin/plugin.json`
+5. To release: change the version in `plugins/foothold/.claude-plugin/plugin.json`
    and in every `SKILL.md` (a test checks they agree), add a `CHANGELOG.md`
    entry, run the tests, commit, then tag `vX.Y.Z` and push the tag.
 6. Git does not keep empty folders. Never rely on one existing. The script

@@ -17,7 +17,7 @@ Remove anything personal first. Never post a real CV or a saved search.
 3. If your change alters a file in the person's saved search, read
    `MIGRATIONS.md` first. Old searches must keep working.
 4. Write for someone who has never used an AI assistant. Short sentences,
-   plain words, no jargon. The skills under `plugins/job-search/skills/` are
+   plain words, no jargon. The skills under `plugins/foothold/skills/` are
    instructions to Claude, written as directives.
 5. Do not weaken the three promises: it never contacts anyone for the
    person, it never writes anything about them that they did not say, and it

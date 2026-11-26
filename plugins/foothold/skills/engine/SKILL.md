@@ -1,9 +1,9 @@
 ---
 name: engine
 description: >
-  Core method for the job-search plugin: the coordinator's role with the
+  Core method for the Foothold plugin: the coordinator's role with the
   candidate, the stages of a job search, the checks, and where the candidate's
-  files are kept. Loaded by the other job-search skills (start-my-search,
+  files are kept. Loaded by the other Foothold skills (start-my-search,
   daily-check, weekly-review, interview-coach, my-search). Not normally
   invoked directly by a person.
 metadata:
@@ -226,9 +226,9 @@ approach note. Lifecycle, gates, the questions loop and edge cases are in
    says adverts in this field most often ask for, each with the other ways
    adverts word it. Agreed names from the first advert keep the gap map
    honest.
-7. Offer to set up the recurring runs: weekdays "run the job-search
-   daily-check, scheduled", Fridays "run the job-search weekly-review", first
-   Monday of the month "run the job-search weekly-review, monthly". Create
+7. Offer to set up the recurring runs: weekdays "run the foothold
+   daily-check, scheduled", Fridays "run the foothold weekly-review", first
+   Monday of the month "run the foothold weekly-review, monthly". Create
    them only on a yes, with whatever scheduling tool exists, and say plainly
    if none does. Tell the candidate that the dashboard shows when the
    automatic check last ran, so they can see it is working.

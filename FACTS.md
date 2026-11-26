@@ -58,4 +58,4 @@ Rules live in `AGENTS.md`. This file holds facts only.
 9. **The "how it works" page began life outside the repository.** Until 26
    November 2026 its only copy was a published page in J's Claude account.
    Its source is now `docs/how-it-works.html`. The dashboard's source is
-   `plugins/job-search/skills/engine/references/dashboard-template.html`.
+   `plugins/foothold/skills/engine/references/dashboard-template.html`.

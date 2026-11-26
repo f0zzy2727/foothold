@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic checks and bookkeeping for the job-search plugin.
+"""Deterministic checks and bookkeeping for the Foothold plugin.
 
 Standard library only. The workspace (the candidate's files) is found from
 --home <dir>, then the JOB_SEARCH_HOME environment variable, then by looking
@@ -1973,7 +1973,7 @@ def migrate():
     have = workspace_version()
     if have > WORKSPACE_VERSION:
         print(f"REFUSED  this search was last used with a newer version of the plugin (format {have}; "
-              f"this plugin understands up to {WORKSPACE_VERSION}). Update the job-search plugin, then try again")
+              f"this plugin understands up to {WORKSPACE_VERSION}). Update the Foothold plugin, then try again")
         return "newer"
     if have == WORKSPACE_VERSION:
         return None

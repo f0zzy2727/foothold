@@ -20,4 +20,4 @@ jobs:
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/job-search.plugin --title "$GITHUB_REF_NAME" --notes "See CHANGELOG.md for what changed."
+        run: gh release create "$GITHUB_REF_NAME" dist/foothold.plugin --title "$GITHUB_REF_NAME" --notes "See CHANGELOG.md for what changed."

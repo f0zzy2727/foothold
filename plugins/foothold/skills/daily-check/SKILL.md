@@ -4,7 +4,7 @@ description: >
   This skill should be used to run the regular check of an existing job
   search: look for new openings, analyse them, prepare applications that are
   due, and update what needs the candidate. Triggers include "run the
-  job-search daily-check", "check for new jobs", "run my daily check", "any
+  foothold daily-check", "check for new jobs", "run my daily check", "any
   new openings", "I have added some jobs", "I found a job", or a scheduled
   task that names this skill.
 metadata:

@@ -48,7 +48,7 @@ The short version:
 In Claude Code, version 2.1.275 or later:
 
 ```
-/plugin install job-search --marketplace f0zzy2727/foothold
+/plugin install foothold --marketplace f0zzy2727/foothold
 ```
 
 ### The bootstrap tests
@@ -150,15 +150,15 @@ The full text is in [DISCLAIMER.md](DISCLAIMER.md).
 | Path | What it is |
 |---|---|
 | `SETUP.md` | The one page a new person follows, with the project instructions and the bootstrap tests |
-| `plugins/job-search/` | The plugin: ten skills, the specialist briefs, the templates and one script |
+| `plugins/foothold/` | The plugin: ten skills, the specialist briefs, the templates and one script |
 | `.claude-plugin/marketplace.json` | Lets Claude install the plugin from this repository |
 | `tests/` | The test suite and an invented sample search it runs against |
-| `scripts/package.sh` | Runs the tests, then builds `dist/job-search.plugin` |
+| `scripts/package.sh` | Runs the tests, then builds `dist/foothold.plugin` |
 | `CHANGELOG.md` | What changed in each version |
 | `MIGRATIONS.md` | The rule for changing a file format, so old searches keep working |
 
-The project is called Foothold. The plugin it ships is called `job-search`,
-which is the name Claude and its skills use.
+The project and the plugin it ships are both called Foothold. In menus and
+commands the plugin's name is written `foothold`.
 
 ```
 python3 -m unittest discover -s tests -v     # run the tests
@@ -170,7 +170,7 @@ on every push.
 
 To release a version:
 
-1. Change the version in `plugins/job-search/.claude-plugin/plugin.json` and
+1. Change the version in `plugins/foothold/.claude-plugin/plugin.json` and
    in every `SKILL.md`. A test fails if they disagree.
 2. If a file in a person's saved search changed shape, follow `MIGRATIONS.md`.
 3. Add an entry to `CHANGELOG.md`.

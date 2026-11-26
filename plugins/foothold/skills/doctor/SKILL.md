@@ -6,7 +6,7 @@ description: >
   "run the doctor", "check my setup", "is everything set up right",
   "run the setup tests", "something is not working", "my search is broken",
   "it has stopped working", "fix my setup", "why is my dashboard out of
-  date", or an error from any other job-search skill that it cannot explain.
+  date", or an error from any other Foothold skill that it cannot explain.
 metadata:
   version: "0.8.0"
 ---
@@ -111,7 +111,7 @@ PASS, FAIL or NOT YET, and plain words.
 | This project remembers between conversations | PASS if step 2 said FOUND. NOT YET on the very first run: "Start a new chat and type Run the setup tests again" | |
 | Claude can search the web for openings | | |
 | Research mode is available for the field research | PASS, or NOT YET with how to switch it on | |
-| Project instructions are in place | PASS if this project's instructions mention the job-search plugin | Otherwise offer the text in `references/project-instructions.md` to paste |
+| Project instructions are in place | PASS if this project's instructions mention the Foothold plugin | Otherwise offer the text in `references/project-instructions.md` to paste |
 | A daily check is scheduled | PASS, or NOT YET: "I can set one up after you start your search" | |
 
 End with one line: "All set" when the first three pass, otherwise the single

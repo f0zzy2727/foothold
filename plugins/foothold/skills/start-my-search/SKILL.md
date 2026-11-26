@@ -25,7 +25,7 @@ Points specific to this skill:
   Opus. You can switch with the model picker, or carry on as we are." Then do
   what the candidate prefers.
 - Run the storage test before the interview, not after. If it fails, stop.
-- If this project has no instructions that mention the job-search plugin,
+- If this project has no instructions that mention the Foothold plugin,
   offer the text in the engine's `references/project-instructions.md` for
   the person to paste into the project's instructions. It makes every later
   conversation start the right way. Carry on whether or not they add it.

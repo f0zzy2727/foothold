@@ -5,6 +5,17 @@
 No change to the search format. A release needs a version number: see rule 5
 in `AGENTS.md`.
 
+Changed
+- The plugin is now called `foothold`, not `job-search`. The folder is
+  `plugins/foothold/`, the released file is `foothold.plugin`, and the
+  phrases for scheduled runs are "run the foothold daily-check" and "run the
+  foothold weekly-review". Claude treats a renamed plugin as a new one:
+  remove `job-search`, add `foothold`, and paste the instructions from
+  `SETUP.md` again, because the old ones name the old plugin.
+- Nothing inside a saved search is renamed. Its documents stay under
+  `job-search/`, and the marker file is still `.job-search`. A search saved
+  with the old name opens unchanged.
+
 Added
 - The page that explains the search now has a public address:
   https://f0zzy2727.github.io/foothold/how-it-works.html. GitHub Pages serves
