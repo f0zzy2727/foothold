@@ -175,6 +175,14 @@ class Basics(Case):
                 done = subprocess.run([node, "--check", str(source)], capture_output=True, text=True)
                 self.assertEqual(done.returncode, 0, f"{page.name}: {done.stderr}")
 
+    def test_help_lists_every_command(self):
+        commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]
+        self.assertGreater(len(commands), 20)
+        done = subprocess.run([sys.executable, str(SCRIPT)], capture_output=True, text=True, cwd=self.tmp)
+        self.assertEqual(done.returncode, 2)
+        for name in commands:
+            self.assertRegex(done.stdout, rf"(?m)^\s+pipeline\.py {re.escape(name)}\b", f"the help does not list {name}")
+
     def test_every_setting_the_script_reads_is_in_the_seed(self):
         seed = (PLUGIN / "skills/engine/references/seed/settings.md").read_text()
         for label in re.findall(r'config_int\("([^"]+)"', SCRIPT.read_text()):

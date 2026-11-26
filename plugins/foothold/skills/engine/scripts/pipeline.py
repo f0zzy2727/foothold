@@ -5,22 +5,44 @@ Standard library only. The workspace (the candidate's files) is found from
 --home <dir>, then the JOB_SEARCH_HOME environment variable, then by looking
 for a ".job-search" marker in the current directory and its parents.
 
+Setting up and looking after a search
     pipeline.py init <dir> [--cloud]        create a new workspace
-    pipeline.py selftest
+    pipeline.py selftest                    can the script run here at all
+    pipeline.py storage-test make           write the file that tests whether this place keeps a search
+    pipeline.py storage-test check <file>   compare that file after reading it back
+    pipeline.py storage-test found <file>   recognise a test file left by an earlier conversation
+    pipeline.py doctor [--fix]              check the whole setup; --fix repairs what is safe
+    pipeline.py migrate                     bring an older search up to the current format
+
+Checking the work
     pipeline.py check                       whole workspace
     pipeline.py check <slug> [--stage N]    one opportunity
     pipeline.py check --research            the research documents
     pipeline.py research-brief              assemble the request for a research run
+
+Recording what happened
     pipeline.py set <slug> <status> [note] [--force]
+    pipeline.py followed-up <slug>          the candidate sent a follow-up
+    pipeline.py checked-sources             the candidate looked at the places Claude cannot read
+    pipeline.py project <slug> proposed|chosen|done|dropped [YYYY-MM-DD]
+    pipeline.py unarchive <slug>            bring an archived role back
+    pipeline.py export <slug>               Word files of a prepared application
+
+Seeing where things stand
     pipeline.py pipeline                    rebuild pipeline.md
+    pipeline.py dashboard [--demo]          rebuild dashboard.html and NEXT.md
     pipeline.py funnel                      counts for reviews
+    pipeline.py leverage                    the gap map: the missing skills that come up most
     pipeline.py changed [--update]          what changed since last run
-    pipeline.py dashboard                   rebuild dashboard.html
-    pipeline.py close "<what happened>"     end of session: log, check, tracker, dashboard, save
-    pipeline.py doctor [--fix]              check the whole setup; --fix repairs what is safe
-    pipeline.py verify <file> [<file>...]   test save files without loading them
+    pipeline.py newfiles <name>... [--update]   project documents the search has not seen before
+    pipeline.py tidy                        close roles that have gone stale, archive old closed ones
+
+Ending a session and keeping the search
+    pipeline.py close [--scheduled] "<what happened>"   log, check, tracker, dashboard, save
+    pipeline.py guard <text of latest.txt | file | none>   has another session saved since this one opened
     pipeline.py save                        write save files for cloud storage
     pipeline.py restore <file> [<file>...]  load save files into the workspace
+    pipeline.py verify <file> [<file>...]   test save files without loading them
 
 Exit code 0 means every check passed. Exit code 1 means at least one FAIL.
 These checks test form, consistency and traceability. They cannot judge

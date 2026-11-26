@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+No change to the search format. A release needs a version number: see rule 5
+in `AGENTS.md`.
+
+Fixed
+- The script's help listed 13 of its 24 commands. The storage test, the gap
+  map, projects, Word export and seven others were missing, so a Claude that
+  asked the script what it could do was not told. The help now lists every
+  command, grouped by what it is for, and a test keeps it complete.
+
 ## 0.9.0, 2026-11-26
 
 No change to the search format.
