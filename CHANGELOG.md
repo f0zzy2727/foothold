@@ -1,9 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.8.0, 2026-11-26
 
-No change to the search format. A release needs a version number: see rule 5
-in `AGENTS.md`.
+No change to the search format.
 
 Changed
 - The dashboard is redesigned. A rail on the left holds the name, the date

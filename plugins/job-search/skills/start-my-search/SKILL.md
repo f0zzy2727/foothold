@@ -6,7 +6,7 @@ description: >
   find a job in" a sector, "run my whole job search", "help my son or daughter
   get a job", or accepting the offer made at the end of try-one-job.
 metadata:
-  version: "0.7.1"
+  version: "0.8.0"
 ---
 
 # Start my search

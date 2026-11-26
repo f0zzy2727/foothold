@@ -8,7 +8,7 @@ description: >
   "the research is out of date", or the research step at the end of
   start-my-search.
 metadata:
-  version: "0.7.1"
+  version: "0.8.0"
 ---
 
 # Research my field

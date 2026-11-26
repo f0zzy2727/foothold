@@ -8,7 +8,7 @@ description: >
   "it has stopped working", "fix my setup", "why is my dashboard out of
   date", or an error from any other job-search skill that it cannot explain.
 metadata:
-  version: "0.7.1"
+  version: "0.8.0"
 ---
 
 # Doctor

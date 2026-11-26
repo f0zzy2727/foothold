@@ -7,7 +7,7 @@ description: >
   practice interview", "mock interview", "debrief", "I had the interview
   today", "they turned me down", or "I got an offer".
 metadata:
-  version: "0.7.1"
+  version: "0.8.0"
 ---
 
 # Interview coach

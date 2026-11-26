@@ -7,7 +7,7 @@ description: >
   daily-check, weekly-review, interview-coach, my-search). Not normally
   invoked directly by a person.
 metadata:
-  version: "0.7.1"
+  version: "0.8.0"
 ---
 
 # Job search engine
