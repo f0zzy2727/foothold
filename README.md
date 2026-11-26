@@ -99,7 +99,7 @@ every job it affects gets a fresh verdict.
 
 ## Status
 
-Version 0.8.0. An early pilot.
+Version 0.9.0. An early pilot.
 
 **Tested**, by the automated suite in this repository: the honesty checks
 against a deliberately dishonest application, an advert with instructions
@@ -174,7 +174,7 @@ To release a version:
    in every `SKILL.md`. A test fails if they disagree.
 2. If a file in a person's saved search changed shape, follow `MIGRATIONS.md`.
 3. Add an entry to `CHANGELOG.md`.
-4. Run the tests, commit, then tag and push: `git tag v0.8.0` and
+4. Run the tests, commit, then tag and push: `git tag v0.9.0` and
    `git push --tags`. The release workflow builds the upload file and
    attaches it to a GitHub release.
 

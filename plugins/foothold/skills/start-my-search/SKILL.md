@@ -7,7 +7,7 @@ description: >
   my son or daughter get a job", or accepting the offer made at the end of
   try-one-job.
 metadata:
-  version: "0.8.0"
+  version: "0.9.0"
 ---
 
 # Start my search

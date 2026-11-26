@@ -1,9 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.9.0, 2026-11-26
 
-No change to the search format. A release needs a version number: see rule 5
-in `AGENTS.md`.
+No change to the search format.
 
 Changed
 - The plugin is now called `foothold`, not `job-search`. The folder is
