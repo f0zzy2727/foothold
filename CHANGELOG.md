@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+No change to the plugin or the search format.
+
+Added
+- The page that explains the search has a switch for light and dark. It
+  follows the device until the reader chooses, and the choice is kept in that
+  browser only.
+
 ## 0.9.1, 2026-11-26
 
 No change to the search format.
