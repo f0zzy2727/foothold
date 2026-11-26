@@ -9,6 +9,11 @@ Added
   follows the device until the reader chooses, and the choice is kept in that
   browser only.
 
+- For developers: `scripts/test-search.py` builds a ready-made search for
+  an invented person, so the flow can be tested in the Claude app without
+  the interview or the research. `CONTRIBUTING.md` says how. It is not in
+  the plugin.
+
 Changed
 - The instructions a person pastes into their project have their own page,
   `PROJECT-INSTRUCTIONS.md`. Step 3 of `SETUP.md` and the page that explains

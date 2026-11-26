@@ -156,6 +156,7 @@ The full text is in [DISCLAIMER.md](DISCLAIMER.md).
 | `.claude-plugin/marketplace.json` | Lets Claude install the plugin from this repository |
 | `tests/` | The test suite and an invented sample search it runs against |
 | `scripts/package.sh` | Runs the tests, then builds `dist/foothold.plugin` |
+| `scripts/test-search.py` | Builds a ready-made search for an invented person, to test in the Claude app without the interview or the research. `CONTRIBUTING.md` says how |
 | `CHANGELOG.md` | What changed in each version |
 | `MIGRATIONS.md` | The rule for changing a file format, so old searches keep working |
 

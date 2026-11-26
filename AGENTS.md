@@ -37,6 +37,7 @@ are new to AI. Everything they see must be plain.
 ```
 python3 -m unittest discover -s tests -v     # run before and after every change
 scripts/package.sh                           # tests, then dist/foothold.plugin
+scripts/test-search.py                       # a ready-made search to load in the Claude app. See CONTRIBUTING.md
 claude plugin validate .                     # if the claude CLI is present
 ```
 

@@ -193,6 +193,50 @@ class Basics(Case):
                 done = subprocess.run([node, "--check", str(source)], capture_output=True, text=True)
                 self.assertEqual(done.returncode, 0, f"{page.name}: {done.stderr}")
 
+    def test_a_ready_made_test_search_builds_and_loads(self):
+        builder = REPO / "scripts" / "test-search.py"
+        if not builder.exists():
+            self.skipTest("the builder is only in the repository, not in the plugin alone")
+        self.assertIn(f'SAMPLE_DAY = "{DAY}"', builder.read_text(), "the builder and the tests disagree on the sample's day")
+        later, out = "2027-03-09", self.tmp / "test-search"      # another month and another year
+        build = lambda *extra: subprocess.run([sys.executable, str(builder), "--today", later, *extra],
+                                              capture_output=True, text=True)
+        done = build("--out", str(out), "--place", "Dublin")
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        # Load it as the prompt tells Claude to: a new cloud workspace, the everyday save first.
+        home = self.tmp / "loaded"
+        self.run_cmd("init", str(home), "--cloud")
+        aside = ("core.txt", "latest.txt", "PROMPT.txt", "sam-example-cv.txt")
+        rest = sorted(str(p) for p in out.glob("*.txt") if p.name not in aside)
+        code, text = self.run_cmd("restore", str(out / "core.txt"), *rest, home=home, day=later)
+        self.assertEqual(code, 0, text)
+        self.assertNotIn("REFUSED", text)
+        code, text = self.run_cmd("check", home=home, day=later)
+        self.assertEqual(code, 0, text)
+        self.run_cmd("dashboard", home=home, day=later)
+        # On the new day the search reads as the sample does on its own day.
+        relative = lambda f: [line for line in f.read_text().splitlines() if "Closes in" in line or "days ago" in line]
+        self.assertTrue(relative(home / "NEXT.md"))
+        self.assertEqual(relative(home / "NEXT.md"), relative(FIXTURES / "sample-search" / "NEXT.md"))
+        self.assertEqual(sorted(p.name for p in (home / "signals").glob("*.md")), ["2027-02.md", "2027-03.md"])
+        target = (home / "profile" / "target.md").read_text()
+        self.assertIn("Dublin", target)
+        self.assertNotIn("Testville", target)
+        # Nothing in it sends Claude back to the interview or the research.
+        _, text = self.run_cmd("doctor", home=home, day=later)
+        self.assertNotRegex(text, r"(?m)^(REDO|NEEDS YOU)\s+(Research|The interview)")
+        code, _ = self.run_cmd("research-brief", home=home, day=later)
+        self.assertEqual(code, 0)
+        with zipfile.ZipFile(out / "test-search.zip") as z:
+            self.assertEqual(sorted(z.namelist()), sorted(p.name for p in out.glob("*.txt") if p.name not in aside[2:]))
+        # It rebuilds its own folder, and never clears one it did not write.
+        self.assertEqual(build("--out", str(out)).returncode, 0)
+        mine = self.tmp / "mine"
+        mine.mkdir()
+        (mine / "keep.txt").write_text("keep")
+        self.assertNotEqual(build("--out", str(mine)).returncode, 0)
+        self.assertEqual((mine / "keep.txt").read_text(), "keep")
+
     def test_help_lists_every_command(self):
         commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]
         self.assertGreater(len(commands), 20)
