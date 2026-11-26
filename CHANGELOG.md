@@ -1,9 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.9.1, 2026-11-26
 
-No change to the search format. A release needs a version number: see rule 5
-in `AGENTS.md`.
+No change to the search format.
 
 Fixed
 - The script's help listed 13 of its 24 commands. The storage test, the gap

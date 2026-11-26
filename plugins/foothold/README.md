@@ -159,7 +159,7 @@ nothing you wrote is changed.
 - A sector pack for the music industry. Any other career works: Claude drafts
   a pack for it at setup.
 
-## Honest status, version 0.9.0
+## Honest status, version 0.9.1
 
 Tested by an automated test suite that ships with the source: the checking
 script against a deliberately dishonest application, an advert with planted

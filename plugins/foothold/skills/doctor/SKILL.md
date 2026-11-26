@@ -8,7 +8,7 @@ description: >
   "it has stopped working", "fix my setup", "why is my dashboard out of
   date", or an error from any other Foothold skill that it cannot explain.
 metadata:
-  version: "0.9.0"
+  version: "0.9.1"
 ---
 
 # Doctor
