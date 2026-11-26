@@ -15,6 +15,11 @@ Changed
 - The dashboard no longer loads a typeface from Google Fonts. It loads
   nothing from any other site, and the privacy note says so.
 
+Fixed
+- The dashboard's title now carries the person's name. A published page takes
+  its name from its own title, so every dashboard was listed as "My job
+  search" whatever name Claude was told to give it.
+
 Added
 - `docs/how-it-works.html`: the page that explains the search, redesigned to
   match the dashboard. Its only copy was a published page. Ten stops on a

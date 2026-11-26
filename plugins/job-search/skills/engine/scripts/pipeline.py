@@ -29,6 +29,7 @@ for.
 """
 import datetime
 import hashlib
+import html
 import json
 import os
 import re
@@ -1444,6 +1445,9 @@ def cmd_dashboard(args):
         print("FAIL  the dashboard template is missing")
         return 1
     payload = json.dumps(data).replace("</", "<\\/")
+    # A published page takes its name from its own title, so the name goes in here too.
+    title = f"{data['name']}'s job search" if data["name"] else "My job search"
+    template = template.replace("<title>My job search</title>", f"<title>{html.escape(title, quote=False)}</title>", 1)
     (ROOT / "dashboard.html").write_text(template.replace("__DATA__", payload), encoding="utf-8")
     print(f"OK  dashboard.html and NEXT.md rebuilt: {len(live)} live roles, "
           f"{len(actions)} thing(s) need the candidate")

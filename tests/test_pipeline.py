@@ -401,6 +401,16 @@ class Reminders(Case):
         self.assertEqual(len(data["funnel"]), 7)
         self.assertLessEqual(len((self.ws / "NEXT.md").read_text().split("\n1. ")[1].split("\n\n")[0].splitlines()), 3)
 
+    def test_dashboard_title_carries_the_name_safely(self):
+        self.assertIn("<title>Sam's job search</title>", self.next())
+        cand = self.ws / "profile" / "candidate.md"
+        cand.write_text(cand.read_text().replace("Sam Example", "</title><b>Sam Example"))
+        page = self.next()
+        self.assertIn("<title>&lt;/title&gt;&lt;b&gt;Sam's job search</title>", page)
+        self.assertEqual(page.count("</title>"), 1)
+        cand.write_text(re.sub(r"(?m)^- Name:.*$", "- Name:", cand.read_text()))
+        self.assertIn("<title>My job search</title>", self.next())
+
     def test_scheduled_close_leaves_evidence(self):
         (self.ws / ".state" / "last-scheduled.txt").unlink()
         self.run_cmd("close", "the daily check")
