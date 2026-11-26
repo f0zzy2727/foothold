@@ -136,8 +136,8 @@ The full text is in [DISCLAIMER.md](DISCLAIMER.md).
   own Claude settings.
 - Your dashboard is published as a private page. If you choose to share it,
   whoever you share it with can see your search.
-- The dashboard page loads one typeface from Google Fonts, so opening it
-  makes a request to Google.
+- The dashboard page loads nothing from any other site. Opening it makes no
+  request to anyone.
 - The list of people who could help holds other people's details. Keep it to
   what you would put in an address book.
 - If you report a problem here, remove anything personal first. Never post a

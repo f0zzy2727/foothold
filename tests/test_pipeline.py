@@ -116,6 +116,39 @@ class Basics(Case):
         for skill in sorted(p.name for p in (PLUGIN / "skills").iterdir() if p.name != "engine"):
             self.assertIn(skill, plugin_copy, f"the instructions do not mention {skill}")
 
+    def pages(self):
+        """The two pages a candidate opens: the dashboard template, and the
+        explainer, which is only in the repository."""
+        found = [PLUGIN / "skills/engine/references/dashboard-template.html"]
+        if (REPO / "docs" / "how-it-works.html").exists():
+            found.append(REPO / "docs" / "how-it-works.html")
+        return found
+
+    def test_pages_load_nothing_from_another_site(self):
+        for page in self.pages():
+            text = page.read_text()
+            for pattern, what in ((r"<link\b", "a linked file"), (r"\bsrc\s*=", "a loaded file"),
+                                  (r"@import", "an imported stylesheet"), (r"url\(", "a fetched resource"),
+                                  (r"fonts\.(googleapis|gstatic)", "a web font"), (r"\bfetch\(", "a request")):
+                self.assertIsNone(re.search(pattern, text), f"{page.name} has {what}")
+
+    def test_page_scripts_are_sound_and_keep_their_names_to_themselves(self):
+        for page in self.pages():
+            text = page.read_text()
+            self.assertEqual(text.count("</script>"), 1, page.name)
+            script = text[text.index("<script>") + len("<script>"):text.index("</script>")].strip()
+            # A name declared at the top level can clash with one the browser owns
+            # (top, name, status), which stops the whole page. One function holds them all.
+            body = script.replace("const D = __DATA__;", "", 1).strip()
+            body = re.sub(r"^/\*.*?\*/\s*", "", body, flags=re.S)
+            self.assertTrue(body.startswith("(function(){") and body.endswith("})();"), page.name)
+            node = shutil.which("node")
+            if node:
+                source = self.tmp / (page.stem + ".js")
+                source.write_text(script.replace("__DATA__", "{}"))
+                done = subprocess.run([node, "--check", str(source)], capture_output=True, text=True)
+                self.assertEqual(done.returncode, 0, f"{page.name}: {done.stderr}")
+
     def test_every_setting_the_script_reads_is_in_the_seed(self):
         seed = (PLUGIN / "skills/engine/references/seed/settings.md").read_text()
         for label in re.findall(r'config_int\("([^"]+)"', SCRIPT.read_text()):

@@ -31,5 +31,3 @@ search in a report. Reproduce the problem with the invented sample in
 - The honesty checks compare an application with the person's own CV and
   evidence. They cannot detect an invented claim written in ordinary words,
   and they cannot tell whether the person's own statements are true.
-- The dashboard page loads one typeface from Google Fonts, so opening it
-  makes a request to Google. See the privacy note in the README.

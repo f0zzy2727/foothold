@@ -1,5 +1,31 @@
 # Changelog
 
+## Unreleased
+
+No change to the search format. A release needs a version number: see rule 5
+in `AGENTS.md`.
+
+Changed
+- The dashboard is redesigned. A rail on the left holds the name, the date
+  and the four signals, which now filter the page. Each role is a row that
+  opens, with its place on a path of seven steps from found to offer. The
+  first thing that needs the person is set larger than the rest. Counts are
+  drawn as bars on one scale. Anything to say to Claude has a copy button.
+  A page more than a day old says so.
+- The dashboard no longer loads a typeface from Google Fonts. It loads
+  nothing from any other site, and the privacy note says so.
+
+Added
+- `docs/how-it-works.html`: the page that explains the search, redesigned to
+  match the dashboard. Its only copy was a published page. Ten stops on a
+  path, a switch to show only the person's part, six set-up steps that follow
+  `SETUP.md` and can be ticked off, and the things worth saying, each with a
+  copy button.
+- `FACTS.md`: what has been learned about how the plugin behaves in the
+  Claude app.
+- Two tests: neither page may load anything from another site, and each
+  page's script must parse and keep its names inside one function.
+
 ## 0.7.1, 2026-11-26
 
 No change to the search format.

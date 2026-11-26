@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>How your job search works</title>
+<style>
+/* Layout: the search is a path of ten stones. The path runs down a quiet rail on the left; the stone you are standing on opens in the wide column beside it, with one invented example on a sheet of paper. Below the path: six set-up steps you can tick off, then the few things worth saying. Same paper, ink, indigo and hairlines as the dashboard. Amber marks your turn, grey marks Claude working alone. The page loads nothing from the network. */
+:root{
+  --paper:#eceeea; --raised:#f6f7f4; --ink:#1c2a33; --ink-2:#56646b; --line:#cdd3cc; --line-2:#aeb7b0;
+  --ai:#2f4b6e; --ai-wash:#dbe3ea;
+  --red:#b23a22; --amber:#8a5a00; --green:#2d6a4f; --grey:#56646b;
+  --font:"Avenir Next",Avenir,"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --paper:#14191c; --raised:#1c2327; --ink:#e6e8e3; --ink-2:#9ba6a9; --line:#2e383c; --line-2:#4a565a;
+    --ai:#9db8dc; --ai-wash:#22303f;
+    --red:#f08a72; --amber:#e0b25a; --green:#86c9a4; --grey:#9ba6a9;}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --paper:#14191c; --raised:#1c2327; --ink:#e6e8e3; --ink-2:#9ba6a9; --line:#2e383c; --line-2:#4a565a;
+  --ai:#9db8dc; --ai-wash:#22303f;
+  --red:#f08a72; --amber:#e0b25a; --green:#86c9a4; --grey:#9ba6a9;}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.55;font-variant-numeric:tabular-nums}
+h1,h2,h3,p,ul,ol,dl,dd{margin:0}
+ul,ol{list-style:none;padding:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:left}
+a{color:var(--ai);text-underline-offset:4px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--ai);outline-offset:3px;border-radius:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.red{--sig:var(--red)} .amber{--sig:var(--amber)} .green{--sig:var(--green)} .grey{--sig:var(--grey)}
+svg.i{width:20px;height:20px;flex:none;fill:none;stroke:var(--sig,currentColor);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.muted{color:var(--ink-2)}
+.small{font-size:.875rem}
+
+.wrap{max-width:1160px;margin:0 auto;padding-block:72px 96px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:104px}
+.cols{display:grid;grid-template-columns:300px minmax(0,1fr);gap:80px;align-items:start}
+.head{padding-bottom:12px;border-bottom:1px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+h2.sec{font-size:1.125rem;font-weight:500}
+
+/* Opening */
+.hero{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:40px 80px;align-items:end}
+.hero .say-it{display:flex;flex-direction:column;gap:24px;min-width:0}
+h1{font-size:clamp(2.375rem,5.4vw,4rem);font-weight:300;letter-spacing:-.028em;line-height:1.03;text-wrap:balance}
+.lede{font-size:1.25rem;line-height:1.45;max-width:40ch}
+.promises{border-top:1px solid var(--line)}
+.promises li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.promises svg{margin-top:2px}
+.link{font-size:.9375rem;font-weight:600;color:var(--ai);border-bottom:1px solid currentColor;line-height:1.3;align-self:flex-start}
+.btn{border:1px solid var(--ink);padding:10px 20px;min-height:44px;font-weight:500;white-space:nowrap;transition:background-color .2s ease,color .2s ease}
+.btn:hover:not([disabled]){background:var(--ink);color:var(--paper)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.primary:hover:not([disabled]){background:var(--ai);border-color:var(--ai)}
+.btn[disabled]{opacity:.3;cursor:default}
+
+/* The path */
+.route{position:sticky;top:32px;display:flex;flex-direction:column;gap:20px;min-width:0}
+.stops>li{position:relative}
+.stops>li::before{content:"";position:absolute;left:10.5px;top:0;bottom:0;width:1px;background:var(--line-2)}
+.stops>li.past::before{background:var(--ink)}
+.stops>li.here::before{background:linear-gradient(var(--ink) 0 21px,var(--line-2) 21px 100%)}
+.stops>li.g:first-child::before{display:none}
+.stops>li.first::before{top:21px}
+.stops>li.first.here::before{background:var(--line-2)}
+.stops>li.last::before{bottom:auto;height:21px}
+.stops>li.last.here::before{background:var(--ink)}
+.g{font-size:.8125rem;color:var(--ink-2);padding:16px 0 4px 34px}
+.g:first-child{padding-top:0}
+.stop{display:grid;grid-template-columns:22px minmax(0,1fr) 20px;gap:12px;align-items:center;width:100%;padding:9px 0;position:relative}
+.stop .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--line-2);background:var(--paper);justify-self:center}
+.past .stop .dot{background:var(--ink);border-color:var(--ink)}
+.here .stop .dot{width:13px;height:13px;background:var(--sig);border-color:var(--sig);box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--sig)}
+.stop .lbl{color:var(--ink-2);line-height:1.3}
+.stop .lbl b{font-weight:400;display:inline-block;min-width:1.6em}
+.stop:hover .lbl,.here .stop .lbl{color:var(--ink)}
+.here .stop .lbl{font-weight:600}
+.here .stop .lbl b{font-weight:600}
+.stop svg.i{width:18px;height:18px}
+.route.mine .claude .stop{opacity:.36}
+.tally{font-size:.875rem;color:var(--ink-2);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:12px}
+.switch{display:inline-flex;align-items:center;gap:10px;font-size:.9375rem;font-weight:500;color:var(--ink);align-self:flex-start}
+.switch i{width:34px;height:20px;border-radius:10px;border:1px solid var(--ink);position:relative;flex:none;transition:background-color .2s ease}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--ink);transition:transform .2s ease,background-color .2s ease}
+.switch[aria-pressed="true"] i{background:var(--ink)}
+.switch[aria-pressed="true"] i::after{transform:translateX(14px);background:var(--paper)}
+
+.stage{display:flex;flex-direction:column;gap:32px;min-width:0}
+.stage.swap{animation:arrive .32s ease both}
+@keyframes arrive{from{opacity:0;transform:translateY(6px)}}
+.stage .count{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font-size:.875rem;color:var(--ink-2)}
+.stage .turn{display:inline-flex;gap:8px;align-items:center;color:var(--ink)}
+.stage h2{font-size:clamp(1.75rem,3.4vw,2.625rem);font-weight:300;letter-spacing:-.022em;line-height:1.08;text-wrap:balance}
+.stage .top{display:flex;flex-direction:column;gap:14px}
+.what{font-size:1.125rem;max-width:58ch}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+.who{border-top:1px solid var(--line)}
+.who>div{display:grid;grid-template-columns:6em minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.who dt{font-size:.875rem;color:var(--ink-2);padding-top:2px}
+.sheet{background:var(--raised);border:1px solid var(--line);padding:24px 28px 12px}
+.sheet .cap{display:flex;justify-content:space-between;gap:12px;font-size:.8125rem;color:var(--ink-2);margin-bottom:14px}
+.sheet h3{font-size:1.125rem;font-weight:600;margin-bottom:4px}
+.rows li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
+.rows li:first-child{border-top:0}
+.rows svg{margin-top:2px}
+.rows small{display:block;color:var(--ink-2);font-size:.875rem}
+.nav{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Set up */
+.intro{position:sticky;top:32px;display:flex;flex-direction:column;gap:18px}
+.intro h2{font-size:clamp(1.75rem,3.4vw,2.625rem);font-weight:300;letter-spacing:-.022em;line-height:1.08}
+.need li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;padding:5px 0}
+.meter{display:flex;flex-direction:column;gap:8px;font-size:.875rem;color:var(--ink-2)}
+.meter .track{height:2px;background:var(--line)}
+.meter .track i{display:block;height:100%;background:var(--ink);width:0;transition:width .35s ease}
+.steps{border-top:1px solid var(--ink)}
+.steps>li{display:grid;grid-template-columns:3rem minmax(0,1fr) auto;gap:8px 12px;padding:26px 0;border-bottom:1px solid var(--line);align-items:start}
+.steps .num{font-size:1.75rem;font-weight:300;line-height:1.05}
+.steps .body{display:flex;flex-direction:column;gap:10px;min-width:0}
+.steps h3{font-size:1.1875rem;font-weight:600;line-height:1.3}
+.steps .body p{max-width:60ch}
+.steps .mins{font-size:.8125rem;color:var(--ink-2)}
+.tick{display:inline-flex;align-items:center;gap:8px;font-size:.875rem;color:var(--ink-2);cursor:pointer;padding-top:4px;white-space:nowrap}
+.tick input{width:18px;height:18px;margin:0;accent-color:var(--ai)}
+.steps>li.done h3,.steps>li.done .num{color:var(--ink-2)}
+
+.say{display:flex;align-items:center;gap:6px 10px;flex-wrap:wrap;max-width:100%}
+.say .to{font-size:.8125rem;color:var(--ink-2)}
+.say q{quotes:none;background:var(--ai-wash);padding:5px 12px;border-radius:2px 12px 12px 12px;font-weight:500;min-width:0;overflow-wrap:anywhere}
+.copy{font-size:.8125rem;font-weight:600;color:var(--ai);border-bottom:1px solid currentColor;line-height:1.3}
+
+/* From now on, and the words */
+.phrases>li{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr);gap:8px 32px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.phrases .then{color:var(--ink-2)}
+.words{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px}
+.words>div{padding:14px 0;border-bottom:1px solid var(--line)}
+.words dt{font-weight:600}
+.words dd{color:var(--ink-2);font-size:.9375rem}
+.sidehead{display:flex;flex-direction:column;gap:10px}
+.sidehead h2{font-size:1.5rem;font-weight:300;letter-spacing:-.015em;line-height:1.15}
+footer{font-size:.875rem;color:var(--ink-2);max-width:72ch;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:20px}
+
+@media (max-width:900px){
+  .wrap{gap:64px;padding-block:36px 64px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+  .hero,.cols,.split{grid-template-columns:minmax(0,1fr)}
+  .hero{gap:32px}
+  .cols{gap:32px}
+  .route,.intro{position:static}
+  .stage{gap:24px;padding:14px 0 26px 34px}
+  .split{gap:24px}
+  .sheet{padding:20px 20px 8px}
+  .phrases>li{grid-template-columns:minmax(0,1fr)}
+  .words{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:520px){
+  .steps>li{grid-template-columns:2.25rem minmax(0,1fr)}
+  .tick{grid-column:2}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-red" viewBox="0 0 24 24"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v4.5M12 17.2v.1"/></symbol>
+  <symbol id="i-amber" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c.6-4 3.6-6.2 7.5-6.2s6.9 2.2 7.5 6.2"/></symbol>
+  <symbol id="i-green" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m7.8 12.3 2.9 2.9 5.5-6"/></symbol>
+  <symbol id="i-grey" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-dasharray="3 3.2"/><path d="M12 7.5V12l3 2"/></symbol>
+</svg>
+<div class="wrap">
+  <header class="hero">
+    <div class="say-it">
+      <h1>How your job search works</h1>
+      <p class="lede">Claude does the legwork and tells you the truth. You make the decisions, send the applications and go to the interviews.</p>
+      <button class="link" type="button" id="jump">Set up in six steps</button>
+    </div>
+    <ul class="promises" aria-label="Three promises">
+      <li class="green"><svg class="i" aria-hidden="true"><use href="#i-green"/></svg><span>It never contacts anyone for you</span></li>
+      <li class="green"><svg class="i" aria-hidden="true"><use href="#i-green"/></svg><span>It only writes what is true about you</span></li>
+      <li class="green"><svg class="i" aria-hidden="true"><use href="#i-green"/></svg><span>It tells you when to skip a job, and why</span></li>
+    </ul>
+  </header>
+
+  <section class="cols" aria-labelledby="h-path">
+    <nav class="route" id="route" aria-labelledby="h-path">
+      <div class="head"><h2 class="sec" id="h-path">The ten stops</h2></div>
+      <ol class="stops" id="stops"></ol>
+      <div class="tally">
+        <button class="switch" type="button" id="mine" aria-pressed="false"><i aria-hidden="true"></i>Show only my part</button>
+        <p id="tallytext">In all: about three quarters of an hour to begin, then about 25 minutes a week, plus interviews.</p>
+      </div>
+    </nav>
+    <div id="stagehome">
+      <article class="stage" id="stage">
+        <div class="top">
+          <p class="count"><span id="count"></span><span class="turn" id="turn"></span></p>
+          <h2 id="stoptitle"></h2>
+          <p class="what" id="what"></p>
+        </div>
+        <div class="split">
+          <dl class="who" id="who"></dl>
+          <div class="sheet" id="sheet"></div>
+        </div>
+        <div class="nav">
+          <button class="btn" type="button" id="prev">Previous stop</button>
+          <button class="btn primary" type="button" id="next">Next stop</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cols" id="set-up" aria-labelledby="h-setup" tabindex="-1">
+    <div class="intro">
+      <h2 id="h-setup">Set up in six steps</h2>
+      <p>About 15 minutes for the first five. The sixth takes about 45 minutes, and you are needed for half of it.</p>
+      <ul class="need" aria-label="What you need">
+        <li class="green"><svg class="i" aria-hidden="true"><use href="#i-green"/></svg><span>A paid Claude plan</span></li>
+        <li class="green"><svg class="i" aria-hidden="true"><use href="#i-green"/></svg><span>Your CV as a file</span></li>
+        <li class="green"><svg class="i" aria-hidden="true"><use href="#i-green"/></svg><span>One job advert you are curious about</span></li>
+      </ul>
+      <div class="meter"><span id="metertext">None of the six done yet. Tick each one as you go.</span><span class="track" aria-hidden="true"><i id="meterfill"></i></span></div>
+      <p class="small muted">Stuck? Ask Claude in plain words, for example "How do I add a plugin?" Once it is running, say "Check my setup" and Claude checks everything and repairs what it safely can.</p>
+    </div>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <section class="cols" aria-labelledby="h-say">
+    <div class="sidehead">
+      <h2 id="h-say">What to say from now on</h2>
+      <p class="muted">You do not need to learn commands. These are ordinary sentences, and close is good enough.</p>
+    </div>
+    <ul class="phrases" id="phrases"></ul>
+  </section>
+
+  <section class="cols" aria-labelledby="h-words">
+    <div class="sidehead">
+      <h2 id="h-words">A few words you will see</h2>
+    </div>
+    <dl class="words" id="words"></dl>
+  </section>
+
+  <footer>
+    <p>The example follows Sam, an invented person applying to an invented venue. Nothing in it is a real finding about any employer or field. Your own search uses research done for your field and where you live, with sources you can check.</p>
+    <p>Times are what the routine is designed for, not measurements. Menu names were checked against Claude's help pages in November 2026 and may change.</p>
+    <p>Foothold helps you run your own job search. It is not careers, legal or financial advice, and nobody can promise an interview or an offer. Claude can be wrong, so read everything before you send it.</p>
+  </footer>
+</div>
+<p class="sr" id="live" aria-live="polite"></p>
+
+<script>
+(function(){
+const GUIDE = "https://github.com/f0zzy2727/foothold/blob/main/SETUP.md";
+const GROUPS = [["Once",2],["Weekdays",1],["For each job",5],["Ongoing",2]];
+const STEPS = [
+ {id:"know-you", short:"Get to know you", you:true, title:"Get to know you",
+  what:"A conversation, one question at a time, about what you want and what you have actually done. Paid work, unpaid work and projects all count.",
+  claude:"Asks about your goals, where you can work, and your experience. Writes down each thing you have done as a numbered fact.",
+  you_do:"Share your CV and answer honestly. \"I don't know\" is a fine answer.", time:"About 20 minutes, once",
+  get:"An evidence list: the numbered facts that every later step is built from.",
+  doc:["Sam's evidence list", [["green","Fact 1","Volunteer stage crew at a local arts festival, 2024 and 2025. Ran load-in for 12 acts."],["green","Fact 2","Bar supervisor, 2023 to 2025. Built weekly rotas in Excel for 9 staff."],["","Sam is 22 and wants to work in live music.","These two facts are where everything starts."]]]},
+ {id:"learn-field", short:"Research your field", you:true, title:"Research how your field hires",
+  what:"Every field hires differently. Before looking for jobs, Claude researches in depth how people really get hired in your part of it, at your level, where you live.",
+  claude:"Uses Research mode, which looks much further than an ordinary search. Every claim comes with its source.",
+  you_do:"Switch Research on when Claude asks. Read the short version, and say if anything looks wrong. Ask for a refresh whenever you like.", time:"About 15 minutes",
+  get:"A plain summary of how hiring works for you, organisations worth watching, and a list of places to look.",
+  doc:["Questions the research answers for Sam", [["","Who employs crew within reach?","Venues, festivals, promoters."],["","Are roles advertised, or filled through people who have already worked events?",""],["","What counts as proof?","Qualifications, or shows you have worked."],["red","Which offers should Sam be wary of?",""],["green","Every answer comes with its source",""]]]},
+ {id:"watch", short:"Watch for openings", you:false, title:"Watch for openings",
+  what:"Claude checks the places it found in the research, and quickly sets aside anything that plainly does not fit.",
+  claude:"Looks for new openings. Screens out the wrong place, the wrong level and anything on your no list. Flags offers that look exploitative.",
+  you_do:"Nothing. If you spot a job yourself, pass it on.", time:"None",
+  get:"A short list of openings worth a proper look. Never more than you can handle at once.",
+  doc:["This week's openings", [["grey","9 seen",""],["grey","6 set aside","Wrong city, or senior roles."],["red","1 flagged","Unpaid, described as \"great exposure\"."],["green","2 passed on for a proper look",""]]]},
+ {id:"read-advert", short:"Read the advert", you:false, title:"Read the advert properly",
+  what:"Adverts mix real requirements with wish lists. Claude separates the two, and works out what the employer actually needs.",
+  claude:"Sorts essentials from nice-to-haves. Notes how to apply and the closing date. Saves a copy, because adverts disappear.",
+  you_do:"Nothing.", time:"None",
+  get:"A clear picture of what this job really asks for.",
+  doc:["Harbour Hall: Production Assistant", [["","Essential","Experience of live events."],["","Essential","Confident use of Excel."],["","Nice to have","Knowledge of QLab, a show control program."],["grey","Closes 20 December","Apply through their careers page."]]]},
+ {id:"verdict", short:"Honest verdict", you:true, title:"Get an honest verdict",
+  what:"Claude sets what the job needs against your evidence list and gives a straight answer. This is the step that saves you from wasted applications.",
+  claude:"Marks each essential as met, partly met or not met, with the fact that proves it. Gives one of four verdicts: Strong fit, Worth tailoring, Stretch or Skip.",
+  you_do:"Decide whether to go for it. Answer one question if there is one.", time:"About 2 minutes",
+  get:"A verdict you can read in ten seconds, with the reasoning underneath if you want it.",
+  doc:["Verdict: Worth tailoring", [["green","Live events: met","Fact 1, load-in for 12 acts."],["green","Excel: met","Fact 2, weekly rotas."],["grey","QLab: not met","A gap, though not an essential."],["amber","One question for Sam","Have you ever used QLab, even once?"]]]},
+ {id:"tailor", short:"Tailor your CV", you:false, title:"Tailor your CV",
+  what:"The same true facts, reordered and reworded so this employer sees straight away what matters to them.",
+  claude:"Rewrites your CV and a short covering note for this job. Records every change, and which fact supports it.",
+  you_do:"Nothing yet.", time:"None",
+  get:"A draft CV and note for this job, with a list of exactly what changed.",
+  doc:["Sam's CV, one change", [["","Before","Bar supervisor. Did the rotas."],["","After","Built weekly crew rotas in Excel for 9 staff."],["green","Supported by Fact 2","Same fact, in the employer's words."]]]},
+ {id:"check-send", short:"Check, then send", you:true, title:"Check it, then you send it",
+  what:"Before you see the application, a separate checker goes through it line by line against your evidence list. Anything it cannot trace comes out.",
+  claude:"Checks every claim and every number. An application cannot be marked ready until the check passes.",
+  you_do:"Read it. If it sounds like you and it is all true, send it yourself.", time:"About 10 minutes",
+  get:"An application you can stand behind in an interview.",
+  doc:["What the check caught", [["red","\"Ran load-in for 30 acts\"","The evidence says 12. Corrected."],["red","\"Confident with QLab\"","Nothing supports this. Removed."],["green","Now passes",""],["amber","Sam reads it and sends it",""]]]},
+ {id:"prepare", short:"Prepare, then go", you:true, title:"Prepare, then go",
+  what:"When an interview comes, Claude helps you get ready for that specific conversation. Then you go.",
+  claude:"Works out what they are likely to ask. Lines up a real example of yours for each question. Offers a practice run and gives honest feedback.",
+  you_do:"Practise if you want to. Go to the interview.", time:"30 to 60 minutes, your choice",
+  get:"Notes for the day, and a true answer ready for the awkward questions.",
+  doc:["Interview notes: Harbour Hall", [["","Likely question","Tell us about a time something went wrong on a show day."],["green","Sam's example","The 2025 festival load-in. Fact 1."],["amber","The awkward one: have you used QLab?","\"No. I have started the free tutorial, and I learn software quickly. I taught myself Excel for the rotas.\""]]]},
+ {id:"learn", short:"Learn from it", you:true, title:"Learn from what happened",
+  what:"Every result teaches something, whether it is an offer, a no, or silence. Claude keeps the lessons so the next round is better.",
+  claude:"Records what they asked and how it went. Each Friday, sums up the week. Each month, checks whether the search is working and suggests changes.",
+  you_do:"Say how it went, the same day if you can. Pick one or two goals for the week. Say yes or no to any suggested change.", time:"About 15 minutes a week",
+  get:"A search that improves, and a clear view of your progress.",
+  doc:["Friday review", [["grey","Harbour Hall asked about late finishes and lifting","Added to the notes for next time."],["green","After a month, venues reply to Sam",""],["grey","Record labels do not",""],["amber","Suggestion: focus on venues","Sam decides."]]]},
+ {id:"close-gap", short:"Close your biggest gap", you:true, title:"Close your biggest gap",
+  what:"Rewording a CV cannot fix a missing skill. Claude counts which missing skills come up again and again across every advert it has read for you, and shows the one that would open the most doors.",
+  claude:"Counts the gaps. Suggests up to three small, real projects for the biggest one, each ending with something you can show. Nothing goes on your evidence list until you have done it.",
+  you_do:"Pick one project, or none, and choose your own finish date. Do it. Then tell Claude and show what you made.", time:"A weekend to two weeks, when you choose",
+  get:"A new fact on your evidence list, and a fresh verdict on every job it affects.",
+  doc:["Sam's biggest gap", [["amber","QLab: missing in 10 of 12 adverts","In 3 of them it is the only essential Sam lacks."],["grey","Project: build and run a 12 cue practice show","Two evenings. Free. Ends with a show file and a short recording."],["green","Done on 8 December. Fact 3 added","Built and ran a 12 cue practice show in QLab."],["green","One verdict moved up","Riverbank Promotions: from Stretch to Worth tailoring."]]]}
+];
+/* The six set-up steps. They follow SETUP.md, which is the full guide. */
+const SETUP = [
+ {t:"Add the plugin", mins:"2 minutes", parts:[
+   ["p","Open Claude and go to Customize, then Plugins. Choose Add, then Add marketplace. Paste this and confirm."],
+   ["say","f0zzy2727/foothold","Paste"],
+   ["p","Then add the plugin called job-search and make sure it is switched on. New versions arrive without you doing anything."]]},
+ {t:"Create a project", mins:"1 minute", parts:[
+   ["p","Go to Projects and choose New project. Call it \"My job search\". A project is where Claude keeps your search between conversations. Always talk to Claude about your search inside it."]]},
+ {t:"Paste the instructions", mins:"2 minutes", parts:[
+   ["p","Open the project's instructions and paste in the text from step 3 of the setup guide. It tells Claude how to run your search and what it must never do."],
+   ["a","Open the setup guide", GUIDE + "#step-3-paste-the-instructions"]]},
+ {t:"Add your CV", mins:"1 minute", parts:[
+   ["p","Add your CV to the project as a file. Word, PDF or plain text all work."]]},
+ {t:"Check it works", mins:"About 10 minutes", parts:[
+   ["p","Start a chat inside the project and choose Claude Opus as the model."],
+   ["say","Run the setup tests","Type"],
+   ["p","You should see a short table. \"The plugin is switched on\" and \"Your search can be stored here and read back\" should both say PASS. Then paste your job advert."],
+   ["say","Is this job right for me?","Type"],
+   ["p","You get an honest verdict, with the reasons. If it is not useful, stop here. Nothing else has been set up."]]},
+ {t:"Start your search", mins:"About 45 minutes, half of it yours", parts:[
+   ["say","Start my search","Type"],
+   ["p","Claude asks about you for about 20 minutes, one question at a time. \"I do not know\" is a fine answer. When Claude asks, press the plus button under the message box and choose Research."],
+   ["say","Research my field","Type"],
+   ["p","This looks in depth at how your field hires and needs nothing from you. Switch Research off when it is done, and say yes when Claude offers to check for new jobs every weekday."]]}
+];
+const PHRASES = [
+ ["What should I do today?","The few things that need you"],
+ ["Check for new jobs","Claude looks for openings and gives a verdict on each"],
+ ["I found a job","Paste the advert with it. You get a verdict, and it joins your search"],
+ ["I applied to the Acme role","Your search is updated"],
+ ["I've got an interview","Preparation, and a practice run if you want one"],
+ ["What is my biggest gap?","The missing skill that would open the most doors"],
+ ["Show me my dashboard","The whole search on one page"],
+ ["Check my setup","A full check, with safe repairs"]
+];
+const WORDS = [
+ ["Verdict","One of Strong fit, Worth tailoring, Stretch or Skip."],
+ ["Readiness","A rough share of the role's essentials that your evidence covers. Indicative, not precise."],
+ ["Evidence bank","The numbered list of things you have told Claude you have done. Your CV is only ever tailored from this list and your own CV."],
+ ["Ready","The application has been checked and is waiting for you to send."],
+ ["Follow-up","A short, polite note you send about ten days after applying if you have heard nothing. Claude drafts it. You send it."],
+ ["Gap map","A count, across every advert read for you, of the skills they ask for that you cannot show yet."],
+ ["Project","One small piece of real work you choose to do to close a gap. It goes on your evidence list only when it is done."],
+ ["Archive","Where roles go a month after they close. Nothing is deleted, and you can ask for one back."],
+ ["Approach","A role with no advert, where writing to the organisation anyway may be worth it."]
+];
+
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, cls, text) => { const e = document.createElement(tag); if(cls) e.className = cls; if(text !== undefined) e.textContent = text; return e; };
+const icon = s => { const v = document.createElementNS(NS,"svg"); v.setAttribute("class","i " + s); v.setAttribute("aria-hidden","true"); const u = document.createElementNS(NS,"use"); u.setAttribute("href","#i-" + s); v.appendChild(u); return v; };
+const calm = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const narrow = window.matchMedia("(max-width: 900px)");
+
+function copy(text, node, btn){
+  const done = ok => { btn.textContent = ok ? "Copied" : "Selected. Now copy it"; $("live").textContent = ok ? "Copied. Paste it to Claude." : "Selected. Copy it, then paste it to Claude."; setTimeout(() => { btn.textContent = "Copy"; }, 2600); };
+  const pick = () => { const r = document.createRange(); r.selectNodeContents(node); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done(false); };
+  try { navigator.clipboard.writeText(text).then(() => done(true), pick); } catch(e){ pick(); }
+}
+function say(phrase, label){
+  const w = el("span","say"); w.appendChild(el("span","to",label || "Say to Claude")); const q = el("q","",phrase); w.appendChild(q);
+  const b = el("button","copy","Copy"); b.type = "button"; b.setAttribute("aria-label", `Copy: ${phrase}`);
+  b.addEventListener("click", () => copy(phrase, q, b)); w.appendChild(b); return w;
+}
+
+/* The path. */
+let current = 0, mine = false;
+const items = [];
+(function build(){
+  let k = 0;
+  GROUPS.forEach(([name, span]) => {
+    const g = el("li","g",name); g.setAttribute("aria-hidden","true"); $("stops").appendChild(g);
+    for(let n = 0; n < span; n++, k++){
+      const s = STEPS[k], i = k;
+      const li = el("li", (s.you ? "you amber" : "claude grey") + (i === 0 ? " first" : "") + (i === STEPS.length - 1 ? " last" : ""));
+      const b = el("button","stop"); b.type = "button"; b.id = "stop-" + i;
+      b.appendChild(el("span","dot"));
+      const lbl = el("span","lbl"); lbl.appendChild(el("b","",String(i + 1))); lbl.appendChild(document.createTextNode(s.short)); b.appendChild(lbl);
+      b.appendChild(icon(s.you ? "amber" : "grey"));
+      b.setAttribute("aria-label", `Stop ${i + 1}, ${s.title}. ${name}. ${s.you ? "Your turn." : "Claude handles this on its own."}`);
+      b.addEventListener("click", () => show(i, true));
+      li.appendChild(b); $("stops").appendChild(li); items.push(li);
+    }
+  });
+})();
+const allowed = i => !mine || STEPS[i].you;
+function step(from, dir){ let i = from + dir; while(i >= 0 && i < STEPS.length && !allowed(i)) i += dir; return i >= 0 && i < STEPS.length ? i : -1; }
+function row(dl, term, text){
+  const d = el("div"); d.appendChild(el("dt","",term)); const dd = el("dd","",text); d.appendChild(dd); dl.appendChild(d);
+}
+function place(){
+  const stage = $("stage");
+  if(narrow.matches) items[current].appendChild(stage); else $("stagehome").appendChild(stage);
+}
+function show(i, byUser){
+  current = Math.max(0, Math.min(STEPS.length - 1, i));
+  const s = STEPS[current];
+  items.forEach((li, k) => { li.classList.toggle("past", k < current); li.classList.toggle("here", k === current); const b = li.firstChild; if(k === current) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); });
+  $("count").textContent = `Stop ${current + 1} of ${STEPS.length}`;
+  const turn = $("turn"); turn.replaceChildren(icon(s.you ? "amber" : "grey"), document.createTextNode(s.you ? "Your turn" : "Claude handles this on its own")); turn.className = "turn " + (s.you ? "amber" : "grey");
+  $("stoptitle").textContent = s.title;
+  $("what").textContent = s.what;
+  const dl = $("who"); dl.replaceChildren();
+  row(dl, "Claude", s.claude); row(dl, "You", s.you_do); row(dl, "Your time", s.time); row(dl, "You get", s.get);
+  const sheet = $("sheet"); sheet.replaceChildren();
+  const cap = el("p","cap"); cap.appendChild(el("span","","Sam's example")); cap.appendChild(el("span","","Invented")); sheet.appendChild(cap);
+  sheet.appendChild(el("h3","",s.doc[0]));
+  const ul = el("ul","rows");
+  s.doc[1].forEach(([sig, main, sub]) => { const li = el("li", sig); li.appendChild(sig ? icon(sig) : el("span")); const t = el("span","",main); if(sub) t.appendChild(el("small","",sub)); li.appendChild(t); ul.appendChild(li); });
+  sheet.appendChild(ul);
+  const before = step(current, -1), after = step(current, 1);
+  $("prev").disabled = before < 0;
+  $("next").textContent = after < 0 ? "Set up your own search" : "Next stop";
+  place();
+  if(byUser){
+    const stage = $("stage"); stage.classList.remove("swap"); void stage.offsetWidth; stage.classList.add("swap");
+    $("live").textContent = `Stop ${current + 1} of ${STEPS.length}: ${s.title}`;
+    try{ history.replaceState(null, "", "#" + s.id); }catch(e){}
+    if(narrow.matches) $("stop-" + current).scrollIntoView({behavior: calm() ? "auto" : "smooth", block:"start"});
+  }
+}
+function toSetup(){ const t = $("set-up"); t.scrollIntoView({behavior: calm() ? "auto" : "smooth", block:"start"}); t.focus({preventScroll:true}); }
+$("prev").addEventListener("click", () => { const i = step(current, -1); if(i >= 0) show(i, true); });
+$("next").addEventListener("click", () => { const i = step(current, 1); if(i < 0) toSetup(); else show(i, true); });
+$("jump").addEventListener("click", toSetup);
+$("stops").addEventListener("keydown", e => {
+  const dir = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+  if(!dir) return; e.preventDefault();
+  const i = step(current, dir); if(i >= 0){ show(i, true); $("stop-" + i).focus(); }
+});
+$("mine").addEventListener("click", () => {
+  mine = !mine; $("mine").setAttribute("aria-pressed", String(mine)); $("route").classList.toggle("mine", mine);
+  const yours = STEPS.filter(s => s.you).length;
+  $("tallytext").textContent = mine
+    ? `${yours} of the ${STEPS.length} stops need you. Claude does the other ${STEPS.length - yours} on its own. Your part: about three quarters of an hour to begin, then about 25 minutes a week, plus interviews.`
+    : "In all: about three quarters of an hour to begin, then about 25 minutes a week, plus interviews.";
+  if(!allowed(current)){ const i = step(current, 1); show(i >= 0 ? i : step(current, -1), true); } else show(current, false);
+});
+narrow.addEventListener("change", place);
+window.addEventListener("hashchange", () => { const k = STEPS.findIndex(s => "#" + s.id === location.hash); if(k >= 0) show(k, false); });
+
+/* Set up: six steps the reader can tick off. Ticks are kept in this browser only. */
+const KEY = "foothold-setup-done";
+let ticks = [];
+try { ticks = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch(e){ ticks = []; }
+if(!Array.isArray(ticks)) ticks = [];
+function meter(){
+  const n = SETUP.filter((s, i) => ticks.includes(i)).length;
+  $("meterfill").style.width = (100 * n / SETUP.length) + "%";
+  $("metertext").textContent = n === 0 ? "None of the six done yet. Tick each one as you go." : n === SETUP.length ? "All six done. Your search is running." : `${n} of ${SETUP.length} done.`;
+}
+SETUP.forEach((s, i) => {
+  const li = el("li", ticks.includes(i) ? "done" : ""); li.appendChild(el("span","num",String(i + 1)));
+  const body = el("div","body"); body.appendChild(el("h3","",s.t));
+  s.parts.forEach(([kind, text, extra]) => {
+    if(kind === "p") body.appendChild(el("p","",text));
+    else if(kind === "say") body.appendChild(say(text, extra));
+    else if(kind === "a"){ const p = el("p"); const a = el("a","",text); a.href = extra; a.target = "_blank"; a.rel = "noopener noreferrer"; p.appendChild(a); body.appendChild(p); }
+  });
+  body.appendChild(el("span","mins",s.mins)); li.appendChild(body);
+  const lab = el("label","tick"); const box = el("input"); box.type = "checkbox"; box.id = "setup-step-" + (i + 1); box.checked = ticks.includes(i);
+  box.addEventListener("change", () => {
+    ticks = ticks.filter(n => n !== i); if(box.checked) ticks.push(i);
+    li.classList.toggle("done", box.checked); meter();
+    try { localStorage.setItem(KEY, JSON.stringify(ticks)); } catch(e){}
+  });
+  lab.appendChild(box); lab.appendChild(el("span","","Done")); li.appendChild(lab);
+  $("steps").appendChild(li);
+});
+meter();
+
+PHRASES.forEach(([phrase, then]) => { const li = el("li"); li.appendChild(say(phrase)); li.appendChild(el("span","then",then)); $("phrases").appendChild(li); });
+WORDS.forEach(([term, means]) => { const d = el("div"); d.appendChild(el("dt","",term)); d.appendChild(el("dd","",means)); $("words").appendChild(d); });
+
+(function(){ const k = STEPS.findIndex(s => "#" + s.id === location.hash); show(k < 0 ? 0 : k, false); })();
+})();
+</script>
+</body>
+</html>
