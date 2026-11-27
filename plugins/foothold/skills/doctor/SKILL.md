@@ -9,7 +9,7 @@ description: >
   date", "load the test search", or an error from any other Foothold skill
   that it cannot explain.
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # Doctor

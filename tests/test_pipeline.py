@@ -312,6 +312,22 @@ class Basics(Case):
             head = (PLUGIN / "skills" / skill / "SKILL.md").read_text().split("---")[1]
             self.assertIn("nothing else said", " ".join(head.split()), skill)
 
+    def test_asking_how_it_works_gets_the_full_explanation(self):
+        skill = (PLUGIN / "skills/my-search/SKILL.md").read_text()
+        head = " ".join(skill.split("---")[1].split())
+        self.assertIn('"how does this work"', head)
+        self.assertIn('"explain how this works"', head)
+        row = next(line for line in skill.splitlines() if line.startswith('| "how does this work"'))
+        self.assertIn("references/how-it-works.md", row)
+        self.assertIn("needs no saved search", " ".join(skill.split()))
+        page = (PLUGIN / "skills/engine/references/how-it-works.md").read_text()
+        self.assertIn("When they ask for the whole thing", page)
+        for part in ("## In one breath", "## Who does what", "## Three promises"):
+            self.assertIn(part, page)
+        self.assertIn("Nothing is widened unless you say yes", page)
+        instructions = (PLUGIN / "skills/engine/references/project-instructions.md").read_text()
+        self.assertIn("does this work?\": my-search", instructions)
+
     def test_help_lists_every_command(self):
         commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]
         self.assertGreater(len(commands), 20)

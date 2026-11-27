@@ -6,9 +6,11 @@ description: >
   "where is my search", "what's the state of my search", "I applied to" a
   role, "skip that one", "I want to go for that one", "why did you say skip",
   "add this job to my search", "I found a job", "I followed up", "I know
-  someone at", "I've changed what I'm looking for", "pause my search", and "help" or "what can you do" in the context of a job search.
+  someone at", "I've changed what I'm looking for", "pause my search", and
+  "help", "what can you do", "how does this work" or "explain how this
+  works" in the context of a job search.
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # My search
@@ -17,12 +19,14 @@ The everyday conversation with the candidate about their search.
 
 1. Load the `engine` skill from this plugin and read it in full.
 2. Open the workspace. If there is no saved search, say so, and offer
-   try-one-job or start-my-search.
+   try-one-job or start-my-search. A request for help, or to explain how it
+   works, needs no saved search: answer it either way.
 3. Answer what was asked. Do not start a run unless asked to.
 
 | The candidate says | Do |
 |---|---|
 | "help", "what can you do" | Answer from `references/how-it-works.md`, five lines or fewer |
+| "how does this work", "explain how this works", "explain all of this", "walk me through it" | Give the full explanation as `references/how-it-works.md` sets out under "When they ask for the whole thing". Then ask which part they would like more on |
 | "what should I do today" | Read out `NEXT.md` in plain words |
 | "where is my search" | Summarise `pipeline.md`: what is waiting on them, what is waiting on the system |
 | "show me my dashboard" | Give the link to their dashboard page if one exists; otherwise close the workspace so it is built, then publish it or hand over `dashboard.html` |

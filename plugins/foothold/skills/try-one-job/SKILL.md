@@ -8,7 +8,7 @@ description: >
   and asks what their chances are, or when they paste or upload a job advert
   with nothing else said and no search has been set up.
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # Try one job

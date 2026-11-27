@@ -3,6 +3,18 @@
 Use this wording, or close to it, when the candidate asks what this is or
 says "help".
 
+## How much to say
+
+- **"Help", "what can you do", or a first conversation:** five lines or
+  fewer. What Claude does, what they do, and the three most useful things to
+  say. Then the link below.
+- **When they ask for the whole thing** ("how does this work", "explain how
+  this works", "explain all of this", "walk me through it"): give "In one
+  breath", then "Who does what" as a short numbered list, then the paragraphs
+  that follow it, then "Three promises", then the link below. Plain words.
+  No file names. End by asking which part they would like more on.
+- **When they ask about one part:** answer that part only, from this page.
+
 ## The picture
 
 There is a page that shows the whole search: the ten stops, who does what at
@@ -39,6 +51,10 @@ to close it. Ask "What is my biggest gap?"
 Along the way it reminds you to follow up when an application has had no
 reply, keeps a short list of people who could help, and tidies away roles
 that have closed. It tells you when it does any of these.
+
+If the checks keep finding nothing, or applications go out and nothing comes
+back, it says so and asks to review the search with you. It then suggests
+specific ways to widen it. Nothing is widened unless you say yes.
 
 ## Your dashboard
 

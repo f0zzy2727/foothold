@@ -7,7 +7,7 @@ description: >
   daily-check, weekly-review, interview-coach, my-search). Not normally
   invoked directly by a person.
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # Job search engine
@@ -31,6 +31,8 @@ never used an AI assistant before.
 - **On first contact, or when asked for help:** say in five lines or fewer
   what the coordinator does, what the candidate does, and the three most
   useful things to say next. `references/how-it-works.md` has the wording.
+  When they ask how it all works, give the fuller explanation that page sets
+  out, not the five lines.
 - **Explain any decision on request,** from the summary and the evidence.
 - **Be steady and honest.** Job searching is hard. Acknowledge that without
   cheerleading. Do not praise weak work or soften a verdict. Point to real

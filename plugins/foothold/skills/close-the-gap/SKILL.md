@@ -8,7 +8,7 @@ description: >
   learn", "suggest a project", "show me the project ideas", "I will do that
   project", "I finished my project", and "how do I get experience".
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # Close the gap

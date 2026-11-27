@@ -9,7 +9,7 @@ description: >
   pasted or uploaded with nothing else said when a search already exists, or
   a scheduled task that names this skill.
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # Daily check

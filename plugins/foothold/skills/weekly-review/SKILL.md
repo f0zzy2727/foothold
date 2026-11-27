@@ -7,7 +7,7 @@ description: >
   search", "nothing is coming up", "widen my search", "is my search working",
   "what should change", or a scheduled task that names this skill.
 metadata:
-  version: "0.10.0"
+  version: "0.10.1"
 ---
 
 # Weekly review

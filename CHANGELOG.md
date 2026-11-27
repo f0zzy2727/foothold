@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.10.1, 2026-11-27
+
+No change to the search format.
+
+Added
+- Asking "How does this work?" or "Explain how this works" now gets the full
+  explanation: what it is, who does what at each step, the three promises
+  and the link to the page. Before, only "help" was listed, and its answer
+  was held to five lines. It works before a search is set up too.
+- The explanation now says what happens when a search finds nothing.
+
+Changed
+- The project instructions gained "How does this work?". People who set up
+  earlier can paste them again. The skills cover it without.
+
 ## 0.10.0, 2026-11-26
 
 No change to the search format.
