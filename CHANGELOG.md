@@ -8,6 +8,8 @@ Changed
 - The page that explains the search lists the new things to say: "Review my
   search" and "How does this work?". It also says an advert can be uploaded,
   or sent with nothing else said.
+- `SETUP.md` lists the same ten things to say as the page. A test keeps the
+  two lists the same.
 
 ## 0.10.1, 2026-11-27
 

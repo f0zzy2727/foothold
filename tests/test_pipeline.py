@@ -343,6 +343,14 @@ class Basics(Case):
             core = phrase.lower().rstrip("?").replace(" to the acme role", "")
             self.assertIn(core, known, f"the page offers '{phrase}', which no skill or instruction mentions")
         self.assertNotIn("test search", text.lower(), "the page must not mention the developers' test search")
+        # The setup guide lists the same things to say, in the same words and order.
+        guide = (REPO / "SETUP.md").read_text()
+        table = guide[guide.index("## What to say from now on"):].split("\n## ")[0]
+        self.assertEqual(re.findall(r"(?m)^\| `([^`]+)` \|", table), listed)
+        said = dict(re.findall(r'^ \["([^"]+)","([^"]+)"\]', text[text.index("const PHRASES"):text.index("const WORDS")], re.M))
+        for phrase, what in re.findall(r"(?m)^\| `([^`]+)` \| (.+?) \|$", table):
+            self.assertEqual(what, said[phrase], phrase)
+        self.assertNotIn("test search", guide.lower())
 
     def test_help_lists_every_command(self):
         commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]

@@ -95,11 +95,13 @@ not there, type `Check for new jobs` yourself on weekdays.
 |---|---|
 | `What should I do today?` | The few things that need you |
 | `Check for new jobs` | Claude looks for openings and gives a verdict on each |
-| `I found a job`, with the advert pasted | A verdict, and it joins your search |
+| `I found a job` | Paste or upload the advert with it, or send the advert on its own. You get a verdict, and it joins your search |
 | `I applied to the Acme role` | Your search is updated |
 | `I've got an interview` | Preparation, and a practice run if you want one |
 | `What is my biggest gap?` | The missing skill that would open the most doors |
+| `Review my search` | For when nothing new is turning up. Claude suggests ways to widen it, and changes nothing unless you say yes |
 | `Show me my dashboard` | The whole search on one page |
+| `How does this work?` | The whole thing explained in plain words |
 | `Check my setup` | A full check, with safe repairs |
 
 ## Optional: a folder on your computer
