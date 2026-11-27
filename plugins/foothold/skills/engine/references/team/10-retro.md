@@ -32,6 +32,13 @@ working, then propose specific changes.
 - Propose changes, each as a specific edit with a reason: to `target.md`, to
   `research/sources.md`, to the master CV, to `settings.md` limits, or a
   research refresh.
+- When the search has gone quiet, propose up to three ways to widen it, most
+  promising first. Each is one specific edit: a nearby role type, a
+  neighbouring segment, a wider area or remote work, another contract type, a
+  stepping-stone role, or new places to look. Take them from the market map
+  and from "Willing to do to get there" in `target.md`. For each, say what it
+  would add and what it would cost the candidate. Never propose past a
+  deal-breaker.
 - Review whether last month's approved changes had any effect.
 - Note anything that is working and should not be changed.
 - Look at the weekly goals the candidate set and whether they were met. If

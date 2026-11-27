@@ -281,6 +281,13 @@ two goals for next week; do not set them.
 Run the reviewer (`references/team/10-retro.md`). Nothing in the target or
 settings changes until the candidate approves.
 
+The script also asks for this review early. When checks keep running and
+find nothing worth a look, when applications go out and nothing comes back,
+or when interviews do not turn into an offer, it puts "Review your search
+with Claude" in the candidate's list. The numbers are in `settings.md`.
+`pipeline review` prints the reason. `pipeline review done` records that the
+candidate has answered the proposals.
+
 ### Building evidence (attended only)
 
 Use when the candidate asks what to work on, when the script's list says

@@ -3,8 +3,9 @@ name: weekly-review
 description: >
   This skill should be used to review progress on an existing job search.
   Triggers include "run the foothold weekly-review", "weekly review", "how
-  is my search going", "review my week", "monthly review", "is my search
-  working", "what should change", or a scheduled task that names this skill.
+  is my search going", "review my week", "monthly review", "review my
+  search", "nothing is coming up", "widen my search", "is my search working",
+  "what should change", or a scheduled task that names this skill.
 metadata:
   version: "0.10.0"
 ---
@@ -12,9 +13,12 @@ metadata:
 # Weekly review
 
 1. Load the `engine` skill from this plugin and read it in full.
-2. If the request says "monthly", or an early-retro threshold in
-   `settings.md` has been reached, follow "Monthly" in the engine's modes.
-   Otherwise follow "Weekly".
+2. Run `pipeline review`. It counts the early signs in `settings.md`. Do not
+   count them yourself.
+3. If the request says "monthly", "review my search", "nothing is coming up"
+   or "widen my search", or the script prints a `REVIEW DUE` line, follow
+   "Monthly" in the engine's modes. Give the candidate the script's reason in
+   plain words first. Otherwise follow "Weekly".
 
 Points specific to this skill:
 
@@ -40,4 +44,8 @@ Points specific to this skill:
   happening, propose a research refresh. The candidate runs it by switching
   Research on and saying "Refresh the research".
 - A monthly review ends with proposals the candidate can answer yes or no to.
-  Change nothing until they answer.
+  Change nothing until they answer. A wider search is one of those proposals:
+  never widen the target, the area or the sources without a yes.
+- When the candidate has answered every proposal, run `pipeline review done`.
+  The early signs are then counted afresh from today. In a scheduled run with
+  nobody to answer, do not run it: the review stays on the candidate's list.

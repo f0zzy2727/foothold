@@ -33,6 +33,7 @@ The everyday conversation with the candidate about their search.
 | "refresh the research", "research my field" | Hand over to the `research-my-field` skill from this plugin |
 | "something is not working", "check my setup" | Hand over to the `doctor` skill from this plugin |
 | "add this job", "I found a job", "I have added some jobs", an advert pasted or uploaded | Treat it as a signal the candidate chose: save it as `0-source.md`, queue it and analyse it now. Then `pipeline checked-sources` |
+| "review my search", "nothing is coming up", "widen my search" | Hand over to the `weekly-review` skill from this plugin. It runs the full review and proposes what to widen |
 | "I followed up with X" | `pipeline followed-up <slug>` |
 | "I checked the job boards" | `pipeline checked-sources` |
 | "I know someone at", "I spoke to" | Add or update the row in `profile/contacts.md`. Agree a next step and a date if they want one. Never contact anyone |

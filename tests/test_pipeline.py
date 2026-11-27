@@ -238,6 +238,80 @@ class Basics(Case):
         for page in ("project-instructions.md", "how-it-works.md"):
             self.assertNotIn("test search", (PLUGIN / "skills/engine/references" / page).read_text().lower(), page)
 
+    def test_a_search_that_finds_nothing_asks_for_a_review(self):
+        events = self.ws / ".state" / "events.log"
+        looked = lambda day: events.write_text(events.read_text() + f"{day} 08:30 | scheduled | the daily check\n")
+        later = "2026-12-28"            # 22 working days after the last role was found
+        # Nothing has looked since, so those days do not count: a check that stopped is a different fault.
+        self.assertIn("NOT DUE", self.run_cmd("review", day=later)[1])
+        looked(later)
+        self.assertIn("REVIEW DUE  Nothing new worth a look for 22 working days", self.run_cmd("review", day=later)[1])
+        self.run_cmd("dashboard", day=later)
+        page = (self.ws / "dashboard.html").read_text()
+        self.assertIn("Review your search with Claude", page)
+        self.assertIn('Say \\"Review my search\\"', page)
+        # The number is the candidate's, from the settings. Nought switches the sign off.
+        settings = self.ws / "settings.md"
+        kept = settings.read_text()
+        for value in ("30", "0"):
+            settings.write_text(kept.replace("- 15 working days", f"- {value} working days"))
+            self.assertIn("NOT DUE", self.run_cmd("review", day=later)[1], value)
+        # A search with every place taken is busy, not quiet.
+        self.assertIn("`interview`): 5", kept)
+        settings.write_text(kept.replace("`interview`): 5", "`interview`): 4"))
+        self.assertIn("NOT DUE", self.run_cmd("review", day=later)[1])
+        settings.write_text(kept)
+        # A review settles it, and counting starts again from that day.
+        self.assertEqual(self.run_cmd("review", "done", day=later)[0], 0)
+        self.assertIn("NOT DUE", self.run_cmd("review", day=later)[1])
+        looked("2027-01-25")
+        self.assertIn("for 20 working days", self.run_cmd("review", day="2027-01-25")[1])
+        # The date of the review travels in the everyday save.
+        self.make_cloud()
+        self.run_cmd("save", day=later)
+        self.assertIn(".state/reviewed.txt", (self.ws / ".save" / "core.txt").read_text())
+
+    def test_silence_and_missed_offers_ask_for_a_review(self):
+        self.run_cmd("review", "done")              # everything in the sample is now before the last review
+        history = self.ws / ".state" / "history.log"
+        add = lambda day, n, status, note="": history.write_text(
+            history.read_text() + f"{day} | invented-role-{n} | {status} | {note}\n")
+        due = lambda: self.run_cmd("review", day="2026-12-10")[1]
+        for n in range(9):
+            add("2026-12-01", n, "applied")
+        self.assertIn("NOT DUE", due())
+        add("2026-12-01", 9, "applied")
+        self.assertIn("REVIEW DUE  10 applications sent and no reply yet", due())
+        add("2026-12-02", 3, "closed", "no response")
+        self.assertIn("10 applications sent and no reply yet", due())
+        add("2026-12-02", 4, "closed", "they said no")          # a no is a reply
+        self.assertIn("NOT DUE", due())
+        for n in range(3):
+            add("2026-12-03", n, "interview")
+        self.assertIn("REVIEW DUE  3 interviews and no offer yet", due())
+        add("2026-12-04", 0, "offer")
+        self.assertIn("NOT DUE", due())
+
+    def test_the_early_signs_are_in_the_seed_and_the_skills_use_the_script(self):
+        seed = (PLUGIN / "skills/engine/references/seed/settings.md").read_text()
+        signs = re.findall(r'threshold\("([^"]+)"', SCRIPT.read_text())
+        self.assertEqual(len(signs), 3)
+        for words in signs:
+            self.assertRegex(seed, rf"(?m)^- \d+ {re.escape(words)}", words)
+        review = (PLUGIN / "skills/weekly-review/SKILL.md").read_text()
+        self.assertIn("`pipeline review`", review)
+        self.assertIn("`pipeline review done`", review)
+        self.assertIn("never widen the target, the area or the sources without a yes", review)
+        self.assertIn("Never widen the search from here", (PLUGIN / "skills/daily-check/SKILL.md").read_text())
+
+    def test_an_advert_with_nothing_said_has_somewhere_to_go(self):
+        words = "pasted or uploaded with nothing else said"
+        instructions = (PLUGIN / "skills/engine/references/project-instructions.md").read_text()
+        self.assertIn(words, instructions)
+        for skill in ("daily-check", "try-one-job"):
+            head = (PLUGIN / "skills" / skill / "SKILL.md").read_text().split("---")[1]
+            self.assertIn("nothing else said", " ".join(head.split()), skill)
+
     def test_help_lists_every_command(self):
         commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]
         self.assertGreater(len(commands), 20)

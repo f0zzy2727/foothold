@@ -5,8 +5,9 @@ description: >
   search: look for new openings, analyse them, prepare applications that are
   due, and update what needs the candidate. Triggers include "run the
   foothold daily-check", "check for new jobs", "run my daily check", "any
-  new openings", "I have added some jobs", "I found a job", or a scheduled
-  task that names this skill.
+  new openings", "I have added some jobs", "I found a job", a job advert
+  pasted or uploaded with nothing else said when a search already exists, or
+  a scheduled task that names this skill.
 metadata:
   version: "0.10.0"
 ---
@@ -35,6 +36,9 @@ Points specific to this skill:
 - If the saved search will not load, or `pipeline check` fails in a way the
   run cannot put right, run `pipeline doctor` (report only, never `--fix`
   unattended) and add a note asking the candidate to say "Run the doctor".
+- Never widen the search from here. When checks keep finding nothing, the
+  script puts "Review your search with Claude" in the candidate's list. Say
+  so in the closing lines and change nothing in the target or the sources.
 - Never run or refresh the research from here. If the script warns that a
   refresh is due, put it in the candidate's list.
 - End with at most five plain lines: what was found, what moved, and what

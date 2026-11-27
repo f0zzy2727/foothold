@@ -4,8 +4,9 @@ description: >
   This skill should be used when the user wants a quick, honest read on one
   job against their CV, with no setup. Triggers include "is this job right for
   me", "should I apply for this", "check my CV against this job", "rate my fit
-  for this role", "try one job", or when the user shares a job advert and a CV
-  and asks what their chances are.
+  for this role", "try one job", when the user shares a job advert and a CV
+  and asks what their chances are, or when they paste or upload a job advert
+  with nothing else said and no search has been set up.
 metadata:
   version: "0.10.0"
 ---

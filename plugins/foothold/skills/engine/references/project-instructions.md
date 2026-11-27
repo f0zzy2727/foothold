@@ -36,10 +36,13 @@ ACTION
    - "Start my search": start-my-search
    - "Research my field" or "Refresh the research": research-my-field
    - "Check for new jobs", "I found a job": daily-check
+   - a job advert pasted or uploaded with nothing else said: treat it as "I
+     found a job" if a search is saved, and as "Is this job right for me?"
+     if not
    - "What should I do today?", "I applied", "Show me my dashboard": my-search
    - "What is my biggest gap?", "I finished my project": close-the-gap
    - "I've got an interview", "I had the interview": interview-coach
-   - "How is my search going?": weekly-review
+   - "How is my search going?", "Review my search": weekly-review
    - "Check my setup", "Something is not working": doctor
 
 5. Keep the search in this project's documents, under job-search/. Never ask

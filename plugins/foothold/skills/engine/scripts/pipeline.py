@@ -25,6 +25,7 @@ Recording what happened
     pipeline.py set <slug> <status> [note] [--force]
     pipeline.py followed-up <slug>          the candidate sent a follow-up
     pipeline.py checked-sources             the candidate looked at the places Claude cannot read
+    pipeline.py review [done]               is a review of the whole search due; done records that one happened
     pipeline.py project <slug> proposed|chosen|done|dropped [YYYY-MM-DD]
     pipeline.py unarchive <slug>            bring an archived role back
     pipeline.py export <slug>               Word files of a prepared application
@@ -1295,6 +1296,83 @@ def manual_sources():
     return places
 
 
+# ---------- when the search itself needs a look ----------
+# Three signs that the search, and not one application, needs reviewing. The
+# numbers are the candidate's, in settings.md under "Thresholds that trigger
+# an early retro". Everything is counted from the last review, so a review
+# settles them until they build up again.
+
+def threshold(words, default):
+    m = re.search(r"^- (\d+) " + re.escape(words), read(ROOT / "settings.md"), re.M)
+    return int(m.group(1)) if m else default
+
+
+def working_days(start, end):
+    """Weekdays after start, up to and including end."""
+    return sum(1 for n in range(1, (end - start).days + 1)
+               if (start + datetime.timedelta(days=n)).weekday() < 5)
+
+
+def review_due():
+    """Reasons, in words the candidate can read, why the search needs a review now."""
+    reviewed = iso_date(read(STATE / "reviewed.txt"))
+    history = []
+    for line in read(STATE / "history.log").splitlines():
+        parts = [p.strip() for p in line.split("|")]
+        day = iso_date(parts[0]) if len(parts) >= 3 else None
+        if day:
+            history.append((day, parts[1], parts[2], parts[3] if len(parts) > 3 else ""))
+    recent = [h for h in history if not reviewed or h[0] > reviewed]
+    reasons = []
+
+    # 1. The checks are running and finding nothing worth a look. Days on
+    # which nothing looked are not counted: a check that has stopped running
+    # is a different fault, and the doctor and the dashboard report it.
+    quiet = threshold("working days with no new screened-in signal", 15)
+    looked = [iso_date(line) for line in read(STATE / "events.log").splitlines()
+              if re.search(r"\|\s*scheduled\s*\||\|\s*run\s*\|.*\bcheck\b", line)]
+    looked = max((d for d in looked if d), default=None)
+    found = max((h[0] for h in history if h[2] == "queued"), default=None)
+    start = max((d for d in (found, iso_date(research_info()["done"]), reviewed) if d), default=None)
+    busy = sum(1 for f in opp_dirs() if parse_status(f)[0] in ACTIVE) >= config_int("Active opportunities", 5)
+    if quiet and looked and start and not busy:
+        days = working_days(start, min(looked, TODAY))
+        if days >= quiet:
+            reasons.append(f"Nothing new worth a look for {days} working days")
+
+    # 2. Applications going out and nothing coming back.
+    silent = threshold("applications sent with no reply of any kind", 10)
+    sent = {h[1] for h in recent if h[2] == "applied"}
+    heard = {h[1] for h in recent if h[2] in ("interview", "offer")
+             or (h[2] == "closed" and h[3].lower() != "no response")}
+    if silent and len(sent) >= silent and not sent & heard:
+        reasons.append(f"{len(sent)} applications sent and no reply yet")
+
+    # 3. Interviews and no offer.
+    stuck = threshold("interviews with no offer", 3)
+    met = {h[1] for h in recent if h[2] == "interview"}
+    if stuck and len(met) >= stuck and not any(h[2] == "offer" for h in recent):
+        reasons.append(f"{len(met)} interviews and no offer yet")
+    return reasons
+
+
+def cmd_review(args):
+    if args == ["done"]:
+        (STATE / "reviewed.txt").write_text(TODAY.isoformat() + "\n", encoding="utf-8")
+        log_event("run", "you reviewed your search with Claude")
+        print("OK  recorded; the signs that a review is due are counted afresh from today")
+        return 0
+    if args:
+        print("usage: review [done]")
+        return 1
+    due = review_due()
+    for reason in due:
+        print(f"REVIEW DUE  {reason}")
+    if not due:
+        print("NOT DUE  none of the early signs in settings.md has been reached")
+    return 0
+
+
 def assess():
     """One deterministic reading of the workspace: every role with a signal
     (red, amber, green or grey), and the list of things that need the candidate.
@@ -1402,6 +1480,9 @@ def assess():
         actions.append(("amber", "Research your field", 'Switch Research on and say "Research my field"'))
     elif info["overdue"]:
         actions.append(("amber", "Refresh the field research", f"Due since {nice(iso_date(info['due']))}"))
+    due = review_due()
+    if due:
+        actions.append(("amber", "Review your search with Claude", ". ".join(due) + '. Say "Review my search"'))
     order = {"red": 0, "amber": 1}
     actions.sort(key=lambda a: order[a[0]])
     write_leverage(lev)
@@ -1801,7 +1882,7 @@ CORE_FILES = ["settings.md", "questions.md", "NEXT.md", "pipeline.md", "leverage
               ".state/version.txt", ".state/generation.txt", ".state/funnel-base.json",
               ".state/signal-counts.json", ".state/followups.json", ".state/manual-check.txt",
               ".state/manual-sources.json", ".state/project-files.json",
-              ".state/last-scheduled.txt", ".state/storage-test.json"]
+              ".state/last-scheduled.txt", ".state/storage-test.json", ".state/reviewed.txt"]
 CORE_DIRS = ["profile", "sectors"]
 TEXT_EXT = {".md", ".txt", ".json", ".log", ""}
 HEAD_RE = re.compile(r"JOB-SEARCH-SAVE v([12]) \| (\S+) \| files=(\d+) \| (?:mark=([0-9a-f]{12}) \| )?sha256=([0-9a-f]{64})")
@@ -2653,7 +2734,7 @@ COMMANDS = {"check": cmd_check, "set": cmd_set, "pipeline": cmd_pipeline,
             "checked-sources": cmd_checked_sources, "newfiles": cmd_newfiles,
             "guard": cmd_guard, "migrate": cmd_migrate, "storage-test": cmd_storage_test,
             "export": cmd_export, "leverage": cmd_leverage, "project": cmd_project,
-            "test-search": cmd_test_search}
+            "test-search": cmd_test_search, "review": cmd_review}
 
 if __name__ == "__main__":
     argv = sys.argv[1:]

@@ -11,11 +11,28 @@ Added
   Every date is moved to today. It loads only into a project with no search
   in it, and no skill offers it. `CONTRIBUTING.md` says how to use it.
 - The script has a matching command, `test-search`.
+- A search that keeps finding nothing now asks for a review. The script
+  counts three early signs from the numbers in the settings: working days
+  with nothing new worth a look, applications sent with no reply, and
+  interviews with no offer. When one is reached it puts "Review your search
+  with Claude" in the person's list and on the dashboard. Saying "Review my
+  search" runs the full review, which proposes up to three specific ways to
+  widen the search. Nothing is widened without a yes. Days on which no check
+  ran are not counted. New command: `review`.
+- A job advert pasted or uploaded with nothing else said now has a rule: it
+  joins the search if there is one, and gets a one-off verdict if not.
 - The page that explains the search has a switch for light and dark. It
   follows the device until the reader chooses, and the choice is kept in that
   browser only.
 
+Fixed
+- The three early signs were written in the settings and never checked. Only
+  the monthly review looked at a search that had gone quiet.
+
 Changed
+- The project instructions gained two lines, for an advert with nothing said
+  and for "Review my search". People who set up before this version can
+  paste the instructions again. The skills cover both cases without it.
 - The instructions a person pastes into their project have their own page,
   `PROJECT-INSTRUCTIONS.md`. Step 3 of `SETUP.md` and the page that explains
   the search link to it. The text itself is unchanged. The page links to the
