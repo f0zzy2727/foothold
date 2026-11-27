@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+No change to the plugin or the search format.
+
+Changed
+- The page that explains the search lists the new things to say: "Review my
+  search" and "How does this work?". It also says an advert can be uploaded,
+  or sent with nothing else said.
+
 ## 0.10.1, 2026-11-27
 
 No change to the search format.

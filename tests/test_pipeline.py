@@ -328,6 +328,22 @@ class Basics(Case):
         instructions = (PLUGIN / "skills/engine/references/project-instructions.md").read_text()
         self.assertIn("does this work?\": my-search", instructions)
 
+    def test_the_page_offers_only_phrases_the_plugin_knows(self):
+        page = REPO / "docs" / "how-it-works.html"
+        if not page.exists():
+            self.skipTest("the explainer is only in the repository, not in the plugin alone")
+        text = page.read_text()
+        listed = re.findall(r'^ \["([^"]+)","', text[text.index("const PHRASES"):text.index("const WORDS")], re.M)
+        self.assertIn("Review my search", listed)
+        self.assertIn("How does this work?", listed)
+        known = (PLUGIN / "skills/engine/references/project-instructions.md").read_text().lower()
+        known += " ".join(p.read_text().lower() for p in (PLUGIN / "skills").glob("*/SKILL.md"))
+        known = " ".join(known.split())
+        for phrase in listed:
+            core = phrase.lower().rstrip("?").replace(" to the acme role", "")
+            self.assertIn(core, known, f"the page offers '{phrase}', which no skill or instruction mentions")
+        self.assertNotIn("test search", text.lower(), "the page must not mention the developers' test search")
+
     def test_help_lists_every_command(self):
         commands = re.findall(r'"([a-z-]+)": cmd_', SCRIPT.read_text()) + ["init"]
         self.assertGreater(len(commands), 20)
